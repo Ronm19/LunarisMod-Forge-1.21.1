@@ -1,0 +1,40 @@
+{
+  "item.lunarismod.noctriumgem": "Noctrium Gem",
+  "item.lunarismod.raw_noctrium_gem": "Raw Noctrium Gem",
+
+  "item.lunarismod.moon_fruit_stew": "Moon Fruit Stew",
+
+  "item.lunarismod.noctrium_sword": "Noctrium Sword",
+  "item.lunarismod.noctrium_pickaxe": "Noctrium Pickaxe",
+  "item.lunarismod.noctrium_shovel": "Noctrium Shovel",
+  "item.lunarismod.noctrium_axe": "Noctrium Axe",
+  "item.lunarismod.noctrium_hoe": "Noctrium Hoe",
+
+  "item.lunarismod.noctrium_hammer": "Noctrium Hammer",
+
+  "item.lunarismod.noctrium_helmet": "Noctrium Helmet",
+  "item.lunarismod.noctrium_chestplate": "Noctrium Chestplate",
+  "item.lunarismod.noctrium_leggings": "Noctrium Leggings",
+  "item.lunarismod.noctrium_boots": "Noctrium Boots",
+
+  "block.lunarismod.noctrium_block": "Noctrium Block",
+  "block.lunarismod.raw_noctrium_block": "Raw Noctrium Block",
+  "block.lunarismod.noctrium_ore": "Noctrium Ore",
+  "block.lunarismod.noctrium_deepslate_ore": "Noctrium Deepslate Ore",
+
+  "block.lunarismod.noctrium_stairs": "Noctrium Stairs",
+  "block.lunarismod.noctrium_slab": "Noctrium Slab",
+
+  "block.lunarismod.noctrium_button": "Noctrium Button",
+  "block.lunarismod.noctrium_pressure_plate": "Noctrium Pressure Plate",
+
+  "block.lunarismod.noctrium_fence": "Noctrium Fence",
+  "block.lunarismod.noctrium_fence_gate": "Noctrium Fence Gate",
+  "block.lunarismod.noctrium_wall": "Noctrium Wall",
+
+  "block.lunarismod.noctrium_door": "Noctrium Door",
+  "block.lunarismod.noctrium_trapdoor": "Noctrium Trapdoor",
+
+  "creativetab.lunarismod.noctrium_items": "Noctrium Items",
+  "creativetab.lunarismod.noctrium_blocks": "Noctrium Blocks"
+}
