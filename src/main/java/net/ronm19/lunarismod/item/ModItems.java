@@ -59,7 +59,7 @@ public class ModItems {
                     new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(40))));
 
     public static final RegistryObject<Item> NOCTRIUM_BOW = ITEMS.register("noctrium_bow",
-            () -> new Item(new Item.Properties().durability(1200))
+            () -> new Item(new Item.Properties().durability(1200)));
 
 
     public static void register(IEventBus eventBus) {
