@@ -1,9 +1,9 @@
-// 1.21.1	2025-07-06T03:42:13.4428572	Registries
+// 1.21.1	2025-07-06T21:39:06.0325953	Registries
 12f206d0a2a091608c5b06057b6a56201d181fc6 data/lunarismod/enchantment/lunar_grace.json
 ffbe2b731ba885169bf01bbe80b4f6b02c0b8a4f data/lunarismod/forge/biome_modifier/add_noctrium_ore.json
 213b2e19b43ad1b61be3fdcff5152f0651660489 data/lunarismod/forge/biome_modifier/add_noctrium_tree.json
 687f7455e4745df9e70cee5ec24b24b9af34843b data/lunarismod/forge/biome_modifier/spawn_lunarwolf.json
-7150d083c94bddcf2629cbc35095915c62227da3 data/lunarismod/forge/biome_modifier/spawn_voidhowler.json
+555560c468bcaea7b03bd4ac870b3c6312095e70 data/lunarismod/forge/biome_modifier/spawn_voidhowler.json
 2cb2e3131cda23cf38f904b933a11249b0f2bae4 data/lunarismod/worldgen/configured_feature/noctrium.json
 50e3ccd160564d771f77aeb22ac8e8bd85254769 data/lunarismod/worldgen/configured_feature/noctrium_ore.json
 3971b865ffa5a26cb7d4d659ee6b89e13cb13dfa data/lunarismod/worldgen/placed_feature/noctrium_ore_placed.json

@@ -64,6 +64,9 @@ public class ModItems {
             () -> new ArmorItem(ModArmorMaterials.NOCTRIUM_ARMOR_MATERIAL, ArmorItem.Type.BOOTS,
                     new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(40))));
 
+    public static final RegistryObject<Item> NOCTRIUM_BONE = ITEMS.register("noctrium_bone",
+            () -> new Item(new Item.Properties()));
+
     public static final RegistryObject<Item> LUNARWOLF_SPAWN_EGG = ITEMS.register("lunarwolf_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.LUNARWOLF, 0x2B0F3F, 0x7C72A8, new Item.Properties()));
     public static final RegistryObject<Item> VOIDHOWLER_SPAWN_EGG = ITEMS.register("voidhowler_spawn_egg",

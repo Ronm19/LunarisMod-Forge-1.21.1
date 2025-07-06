@@ -47,6 +47,7 @@ public class ModItemModelProvider extends ItemModelProvider {
     protected void registerModels() {
         basicItem(ModItems.RAW_NOCTRIUM_GEM.get());
         basicItem(ModItems.NOCTRIUMGEM.get());
+        basicItem(ModItems.NOCTRIUM_BONE.get());
 
         basicItem(ModItems.MOON_FRUIT_STEW.get());
 
