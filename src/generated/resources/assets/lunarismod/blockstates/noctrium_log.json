@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "lunarismod:block/noctrium_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "lunarismod:block/noctrium_log"
+    },
+    "axis=z": {
+      "model": "lunarismod:block/noctrium_log_horizontal",
+      "x": 90
+    }
+  }
+}

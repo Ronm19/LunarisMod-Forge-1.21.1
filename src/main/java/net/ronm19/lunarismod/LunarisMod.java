@@ -1,6 +1,7 @@
 package net.ronm19.lunarismod;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -14,9 +15,18 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.ronm19.lunarismod.block.ModBlocks;
+import net.ronm19.lunarismod.effect.ModEffects;
+import net.ronm19.lunarismod.enchantment.ModEnchantmentEffects;
+import net.ronm19.lunarismod.entity.ModEntities;
+import net.ronm19.lunarismod.entity.client.LunarWolfRenderer;
+import net.ronm19.lunarismod.entity.client.NoctriumTomahawkProjectileRenderer;
+import net.ronm19.lunarismod.entity.client.VoidHowlerRenderer;
 import net.ronm19.lunarismod.item.ModCreativeModeTabs;
 import net.ronm19.lunarismod.item.ModItems;
+import net.ronm19.lunarismod.sound.ModSounds;
+import net.ronm19.lunarismod.potion.ModPotions;
 import org.slf4j.Logger;
+
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(LunarisMod.MOD_ID)
@@ -32,10 +42,20 @@ public class LunarisMod {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
+
         ModCreativeModeTabs.register(modEventBus);
 
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
+
+        ModSounds.register(modEventBus);
+
+        ModEffects.register(modEventBus);
+        ModPotions.register(modEventBus);
+
+        ModEnchantmentEffects.register(modEventBus);
+        ModEntities.register(modEventBus);
+
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
@@ -69,7 +89,9 @@ public class LunarisMod {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-
+            EntityRenderers.register(ModEntities.LUNARWOLF.get(), LunarWolfRenderer::new);
+            EntityRenderers.register(ModEntities.NOCTRIUM_TOMAHAWK.get(), NoctriumTomahawkProjectileRenderer::new);
+            EntityRenderers.register(ModEntities.VOIDHOWLER.get(), VoidHowlerRenderer::new);
         }
     }
 }

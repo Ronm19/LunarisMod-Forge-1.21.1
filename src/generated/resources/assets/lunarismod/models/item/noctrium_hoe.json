@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "lunarismod:item/noctrium_hoe"
+  }
+}

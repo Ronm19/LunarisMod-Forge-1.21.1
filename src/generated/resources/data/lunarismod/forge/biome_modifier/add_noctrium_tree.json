@@ -1,0 +1,9 @@
+{
+  "type": "forge:add_features",
+  "biomes": [
+    "minecraft:plains",
+    "minecraft:swamp"
+  ],
+  "features": "lunarismod:noctrium_placed_key",
+  "step": "vegetal_decoration"
+}

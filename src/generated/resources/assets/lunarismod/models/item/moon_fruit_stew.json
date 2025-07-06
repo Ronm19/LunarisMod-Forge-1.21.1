@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "lunarismod:item/moon_fruit_stew"
+  }
+}

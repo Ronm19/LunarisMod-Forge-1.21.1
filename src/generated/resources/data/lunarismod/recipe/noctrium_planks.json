@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "N": {
+      "item": "lunarismod:noctrium_log"
+    }
+  },
+  "pattern": [
+    "NN",
+    "NN"
+  ],
+  "result": {
+    "count": 1,
+    "id": "lunarismod:noctrium_planks"
+  }
+}

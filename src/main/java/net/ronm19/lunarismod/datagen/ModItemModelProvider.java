@@ -67,6 +67,17 @@ public class ModItemModelProvider extends ItemModelProvider {
         trimmedArmorItem(ModItems.NOCTRIUM_CHESTPLATE);
         trimmedArmorItem(ModItems.NOCTRIUM_LEGGINGS);
         trimmedArmorItem(ModItems.NOCTRIUM_BOOTS);
+
+        saplingItem(ModBlocks.NOCTRIUM_SAPLING);
+
+        withExistingParent(ModItems.LUNARWOLF_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.VOIDHOWLER_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+    }
+
+    private ItemModelBuilder saplingItem(RegistryObject<Block> item) {
+        return withExistingParent(item.getId().getPath(),
+                ResourceLocation.parse("item/generated")).texture("layer0",
+                ResourceLocation.fromNamespaceAndPath(LunarisMod.MOD_ID,"block/" + item.getId().getPath()));
     }
 
     // Shoutout to El_Redstoniano for making this

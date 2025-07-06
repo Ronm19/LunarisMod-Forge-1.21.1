@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "lunarismod:block/stripped_noctrium_log",
+    "side": "lunarismod:block/stripped_noctrium_log"
+  }
+}

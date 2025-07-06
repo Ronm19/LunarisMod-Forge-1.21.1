@@ -30,13 +30,16 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.NOCTRIUM_HOE.get());
 
                         pOutput.accept(ModItems.NOCTRIUM_HAMMER.get());
+                        pOutput.accept(ModItems.NOCTRIUM_TOMAHAWK.get());
 
                         pOutput.accept(ModItems.NOCTRIUM_HELMET.get());
                         pOutput.accept(ModItems.NOCTRIUM_CHESTPLATE.get());
                         pOutput.accept(ModItems.NOCTRIUM_LEGGINGS.get());
                         pOutput.accept(ModItems.NOCTRIUM_BOOTS.get());
 
-                        pOutput.accept(ModItems.NOCTRIUM_BOW.get());
+                        pOutput.accept(ModItems.LUNARWOLF_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.VOIDHOWLER_SPAWN_EGG.get());
+
 
 
 
@@ -64,6 +67,14 @@ public class ModCreativeModeTabs {
 
                         pOutput.accept(ModBlocks.NOCTRIUM_DOOR.get());
                         pOutput.accept(ModBlocks.NOCTRIUM_TRAPDOOR.get());
+
+                        pOutput.accept(ModBlocks.NOCTRIUM_LEAVES.get());
+                        pOutput.accept(ModBlocks.NOCTRIUM_LOG.get());
+                        pOutput.accept(ModBlocks.NOCTRIUM_PLANKS.get());
+                        pOutput.accept(ModBlocks.STRIPPED_NOCTRIUM_LOG.get());
+                        pOutput.accept(ModBlocks.STRIPPED_NOCTRIUM_WOOD.get());
+                        pOutput.accept(ModBlocks.NOCTRIUM_WOOD.get());
+                        pOutput.accept(ModBlocks.NOCTRIUM_SAPLING.get());
 
 
 

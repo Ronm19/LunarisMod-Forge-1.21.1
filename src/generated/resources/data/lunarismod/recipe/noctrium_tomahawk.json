@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "N": {
+      "item": "lunarismod:noctrium_block"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    " NN",
+    " S ",
+    " S "
+  ],
+  "result": {
+    "count": 1,
+    "id": "lunarismod:noctrium_tomahawk"
+  }
+}

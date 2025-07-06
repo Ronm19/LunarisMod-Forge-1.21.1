@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "noctrium",
+  "key": {
+    "#": {
+      "item": "lunarismod:noctriumgem"
+    }
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "result": {
+    "count": 4,
+    "id": "lunarismod:noctrium_stairs"
+  }
+}

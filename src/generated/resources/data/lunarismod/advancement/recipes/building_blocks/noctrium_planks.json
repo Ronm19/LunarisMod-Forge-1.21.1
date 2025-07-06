@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_noctrium_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "lunarismod:noctrium_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lunarismod:noctrium_planks"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_noctrium_log"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lunarismod:noctrium_planks"
+    ]
+  }
+}

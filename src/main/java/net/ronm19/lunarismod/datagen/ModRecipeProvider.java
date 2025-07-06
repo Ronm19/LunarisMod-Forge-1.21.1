@@ -3,6 +3,8 @@ package net.ronm19.lunarismod.datagen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
@@ -10,6 +12,7 @@ import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import net.ronm19.lunarismod.LunarisMod;
 import net.ronm19.lunarismod.block.ModBlocks;
 import net.ronm19.lunarismod.item.ModItems;
+import net.ronm19.lunarismod.util.ModTags;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -96,6 +99,15 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModBlocks.NOCTRIUM_BLOCK.get()), has(ModBlocks.NOCTRIUM_BLOCK.get()))
                 .save(pRecipeOutput);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.NOCTRIUM_TOMAHAWK.get())
+                .pattern(" NN")
+                .pattern(" S ")
+                .pattern(" S ")
+                .define('N', ModBlocks.NOCTRIUM_BLOCK.get())
+                .define('S', Items.STICK)
+                .unlockedBy(getHasName(ModBlocks.NOCTRIUM_BLOCK.get()), has(ModBlocks.NOCTRIUM_BLOCK.get()))
+                .save(pRecipeOutput);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.NOCTRIUM_HELMET.get())
                 .pattern("NNN")
                 .pattern("N N")
@@ -126,6 +138,16 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModItems.NOCTRIUMGEM.get()), has(ModItems.NOCTRIUMGEM.get()))
                 .save(pRecipeOutput);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.NOCTRIUM_PLANKS.get())
+                .pattern("NN")
+                .pattern("NN")
+                .define('N', ModBlocks.NOCTRIUM_LOG.get())
+                .unlockedBy(getHasName(ModBlocks.NOCTRIUM_LOG.get()), has(ModBlocks.NOCTRIUM_LOG.get()))
+                .save(pRecipeOutput);
+
+
+
+
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.NOCTRIUMGEM.get(), 9)
                 .requires(ModBlocks.NOCTRIUM_BLOCK.get())
@@ -152,8 +174,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModItems.NOCTRIUMGEM.get()), has(ModItems.NOCTRIUMGEM.get())).save(pRecipeOutput);
         trapdoorBuilder(ModBlocks.NOCTRIUM_TRAPDOOR.get(), Ingredient.of(ModItems.NOCTRIUMGEM.get())).group("noctrium")
                 .unlockedBy(getHasName(ModItems.NOCTRIUMGEM.get()), has(ModItems.NOCTRIUMGEM.get())).save(pRecipeOutput);
-    }
 
+
+    }
 
 
     protected static void oreSmelting(RecipeOutput recipeOutput, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult,

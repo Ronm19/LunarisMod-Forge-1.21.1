@@ -1,0 +1,16 @@
+{
+  "values": [
+    "lunarismod:noctrium_deepslate_ore",
+    "lunarismod:noctrium_ore",
+    "lunarismod:raw_noctrium_block",
+    "lunarismod:noctrium_block",
+    "lunarismod:noctrium_door",
+    "lunarismod:noctrium_fence",
+    "lunarismod:noctrium_wall",
+    "lunarismod:noctrium_button",
+    "lunarismod:noctrium_trapdoor",
+    "lunarismod:noctrium_stairs",
+    "lunarismod:noctrium_slab",
+    "lunarismod:noctrium_pressure_plate"
+  ]
+}

@@ -1,15 +1,19 @@
 package net.ronm19.lunarismod.event;
 
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionBrewing;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraftforge.event.brewing.BrewingRecipeRegisterEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.ronm19.lunarismod.LunarisMod;
 import net.ronm19.lunarismod.item.custom.HammerItem;
+import net.ronm19.lunarismod.potion.ModPotions;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,8 +22,6 @@ import java.util.Set;
 public class ModEvents {
     private static final Set<BlockPos> HARVESTED_BLOCKS = new HashSet<>();
 
-    // Done with the help of https://github.com/CoFH/CoFHCore/blob/1.19.x/src/main/java/cofh/core/event/AreaEffectEvents.java
-    // Don't be a jerk License
     @SubscribeEvent
     public static void onHammerUsage(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
@@ -41,5 +43,12 @@ public class ModEvents {
                 HARVESTED_BLOCKS.remove(pos);
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onBrewingRecipeRegister(BrewingRecipeRegisterEvent event) {
+        PotionBrewing.Builder builder = event.getBuilder();
+
+        builder.addMix(Potions.AWKWARD, Items.END_ROD, ModPotions.LUNAR_POTION.getHolder().get());
     }
 }

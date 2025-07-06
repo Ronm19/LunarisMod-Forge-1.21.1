@@ -1,12 +1,16 @@
 package net.ronm19.lunarismod.item;
 
 import net.minecraft.world.item.*;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.ronm19.lunarismod.LunarisMod;
+import net.ronm19.lunarismod.entity.ModEntities;
 import net.ronm19.lunarismod.item.custom.HammerItem;
+import net.ronm19.lunarismod.item.custom.ModArmorItem;
+import net.ronm19.lunarismod.item.custom.NoctriumTomahawkItem;
 
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS =
@@ -19,7 +23,6 @@ public class ModItems {
 
     public static final RegistryObject<Item> MOON_FRUIT_STEW = ITEMS.register("moon_fruit_stew",
             () -> new Item(new Item.Properties().food(ModFoodProperties.MOON_FRUIT_STEW)));
-
 
     public static final RegistryObject<Item> NOCTRIUM_SWORD = ITEMS.register("noctrium_sword",
             () -> new SwordItem(ModToolTiers.NOCTRIUM, new Item.Properties().fireResistant()
@@ -45,8 +48,11 @@ public class ModItems {
             () -> new HammerItem(ModToolTiers.NOCTRIUM, new Item.Properties().fireResistant()
                     .attributes(PickaxeItem.createAttributes(ModToolTiers.NOCTRIUM, 17, -2.9f))));
 
+    public static final RegistryObject<Item> NOCTRIUM_TOMAHAWK = ITEMS.register("noctrium_tomahawk",
+            () -> new NoctriumTomahawkItem(new Item.Properties().stacksTo(16)));
+
     public static final RegistryObject<Item> NOCTRIUM_HELMET = ITEMS.register("noctrium_helmet",
-            () -> new ArmorItem(ModArmorMaterials.NOCTRIUM_ARMOR_MATERIAL, ArmorItem.Type.HELMET,
+            () -> new ModArmorItem(ModArmorMaterials.NOCTRIUM_ARMOR_MATERIAL, ArmorItem.Type.HELMET,
                     new Item.Properties().durability(ArmorItem.Type.HELMET.getDurability(40))));
     public static final RegistryObject<Item> NOCTRIUM_CHESTPLATE = ITEMS.register("noctrium_chestplate",
             () -> new ArmorItem(ModArmorMaterials.NOCTRIUM_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE,
@@ -58,8 +64,12 @@ public class ModItems {
             () -> new ArmorItem(ModArmorMaterials.NOCTRIUM_ARMOR_MATERIAL, ArmorItem.Type.BOOTS,
                     new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(40))));
 
-    public static final RegistryObject<Item> NOCTRIUM_BOW = ITEMS.register("noctrium_bow",
-            () -> new Item(new Item.Properties().durability(1200)));
+    public static final RegistryObject<Item> LUNARWOLF_SPAWN_EGG = ITEMS.register("lunarwolf_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.LUNARWOLF, 0x2B0F3F, 0x7C72A8, new Item.Properties()));
+    public static final RegistryObject<Item> VOIDHOWLER_SPAWN_EGG = ITEMS.register("voidhowler_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.VOIDHOWLER, 0x1A092B, 0xA47CC3, new Item.Properties()));
+
+
 
 
     public static void register(IEventBus eventBus) {

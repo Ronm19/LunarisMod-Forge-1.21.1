@@ -1,0 +1,8 @@
+{
+  "remove": [
+    "#lunarismod:needs_noctrium_tool"
+  ],
+  "values": [
+    "#minecraft:incorrect_for_diamond_tool"
+  ]
+}

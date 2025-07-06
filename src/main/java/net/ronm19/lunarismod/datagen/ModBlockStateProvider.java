@@ -1,6 +1,7 @@
 package net.ronm19.lunarismod.datagen;
 
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -42,6 +43,32 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockItem(ModBlocks.NOCTRIUM_PRESSURE_PLATE);
         blockItem(ModBlocks.NOCTRIUM_FENCE_GATE);
         blockItem(ModBlocks.NOCTRIUM_TRAPDOOR, "_bottom");
+
+        logBlock(ModBlocks.NOCTRIUM_LOG.get());
+        axisBlock(ModBlocks.NOCTRIUM_WOOD.get(), blockTexture(ModBlocks.NOCTRIUM_LOG.get()), blockTexture(ModBlocks.NOCTRIUM_LOG.get()));
+        logBlock(ModBlocks.STRIPPED_NOCTRIUM_LOG.get());
+        axisBlock(ModBlocks.STRIPPED_NOCTRIUM_WOOD.get(), blockTexture(ModBlocks.STRIPPED_NOCTRIUM_LOG.get()), blockTexture(ModBlocks.STRIPPED_NOCTRIUM_LOG.get()));
+
+        blockItem(ModBlocks.NOCTRIUM_LOG);
+        blockItem(ModBlocks.NOCTRIUM_WOOD);
+        blockItem(ModBlocks.STRIPPED_NOCTRIUM_LOG);
+        blockItem(ModBlocks.STRIPPED_NOCTRIUM_WOOD);
+
+        blockWithItem(ModBlocks.NOCTRIUM_PLANKS);
+
+        leavesBlock(ModBlocks.NOCTRIUM_LEAVES);
+        saplingBlock(ModBlocks.NOCTRIUM_SAPLING);
+    }
+
+    private void saplingBlock(RegistryObject<Block> blockRegistryObject) {
+        simpleBlock(blockRegistryObject.get(),
+                models().cross(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), blockTexture(blockRegistryObject.get())).renderType("cutout"));
+    }
+
+    private void leavesBlock(RegistryObject<Block> blockRegistryObject) {
+        simpleBlockWithItem(blockRegistryObject.get(),
+                models().singleTexture(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), ResourceLocation.parse("minecraft:block/leaves"),
+                        "all", blockTexture(blockRegistryObject.get())).renderType("cutout"));
     }
 
     private void blockWithItem(RegistryObject<Block> blockRegistryObject) {

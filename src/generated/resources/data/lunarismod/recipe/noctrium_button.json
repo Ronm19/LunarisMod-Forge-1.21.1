@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "noctrium",
+  "ingredients": [
+    {
+      "item": "lunarismod:noctriumgem"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "lunarismod:noctrium_button"
+  }
+}

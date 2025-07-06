@@ -79,5 +79,10 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .addTag(BlockTags.INCORRECT_FOR_DIAMOND_TOOL)
                 .remove(ModTags.Blocks.NEEDS_NOCTRIUM_TOOL);
 
+        this.tag(BlockTags.LOGS_THAT_BURN)
+                .add(ModBlocks.NOCTRIUM_LOG.get())
+                .add(ModBlocks.NOCTRIUM_WOOD.get())
+                .add(ModBlocks.STRIPPED_NOCTRIUM_LOG.get())
+                .add(ModBlocks.STRIPPED_NOCTRIUM_WOOD.get());
     }
 }

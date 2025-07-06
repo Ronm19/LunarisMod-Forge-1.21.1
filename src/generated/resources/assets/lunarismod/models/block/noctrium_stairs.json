@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "lunarismod:block/noctrium_block",
+    "side": "lunarismod:block/noctrium_block",
+    "top": "lunarismod:block/noctrium_block"
+  }
+}

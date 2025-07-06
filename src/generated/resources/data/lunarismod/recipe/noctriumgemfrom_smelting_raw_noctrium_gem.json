@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.29,
+  "group": "noctrium",
+  "ingredient": {
+    "item": "lunarismod:raw_noctrium_gem"
+  },
+  "result": {
+    "id": "lunarismod:noctriumgem"
+  }
+}

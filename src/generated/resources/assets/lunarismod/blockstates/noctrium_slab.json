@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "lunarismod:block/noctrium_slab"
+    },
+    "type=double": {
+      "model": "lunarismod:block/noctrium_block"
+    },
+    "type=top": {
+      "model": "lunarismod:block/noctrium_slab_top"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "lunarismod:block/raw_noctrium_block"
+  }
+}

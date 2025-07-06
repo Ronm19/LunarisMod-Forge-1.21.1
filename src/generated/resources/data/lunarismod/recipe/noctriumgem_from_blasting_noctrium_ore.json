@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.29,
+  "group": "noctrium",
+  "ingredient": {
+    "item": "lunarismod:noctrium_ore"
+  },
+  "result": {
+    "id": "lunarismod:noctriumgem"
+  }
+}
