@@ -28,5 +28,15 @@ public class LunarWolfRenderer extends MobRenderer<LunarWolfEntity, LunarWolfMod
         }
 
         super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
+
+        int glowColor = pEntity.getEyeGlowColor();
+
+        // Extract RGB components
+        float red = ((glowColor >> 16) & 0xFF) / 255f;
+        float green = ((glowColor >> 8) & 0xFF) / 255f;
+        float blue = (glowColor & 0xFF) / 255f;
+
     }
+
+
 }

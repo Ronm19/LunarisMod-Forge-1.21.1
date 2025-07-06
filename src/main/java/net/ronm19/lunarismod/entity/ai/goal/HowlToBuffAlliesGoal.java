@@ -1,10 +1,14 @@
 package net.ronm19.lunarismod.entity.ai.goal;
 
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.ronm19.lunarismod.entity.ai.PackRole;
 import net.ronm19.lunarismod.entity.custom.LunarWolfEntity;
 import net.ronm19.lunarismod.entity.custom.VoidHowlerEntity;
 import net.ronm19.lunarismod.sound.ModSounds;
@@ -13,51 +17,59 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class HowlToBuffAlliesGoal extends Goal {
-    private final VoidHowlerEntity voidHowler;
-    private int cooldownTicks = 0;
-    private static final int MAX_COOLDOWN = 600; // 30 seconds
-    private static final int BUFF_DURATION = 200; // 10 seconds
-    private static final int BUFF_RADIUS = 40; // increased from 20
+    private final VoidHowlerEntity howler;
+    private static final long COOLDOWN_TICKS = 400L; // 20 seconds
+    private long nextAllowedHowl = 0;
 
-    public HowlToBuffAlliesGoal(VoidHowlerEntity voidHowler) {
-        this.voidHowler = voidHowler;
-        this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+    public HowlToBuffAlliesGoal(VoidHowlerEntity howler) {
+        this.howler = howler;
+        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
     @Override
     public boolean canUse() {
-        if (cooldownTicks > 0) {
-            cooldownTicks--;
-            return false;
-        }
+        long currentTick = howler.level().getGameTime();
 
-        List<LunarWolfEntity> alliesNearby = voidHowler.level().getEntitiesOfClass(
-                LunarWolfEntity.class,
-                voidHowler.getBoundingBox().inflate(BUFF_RADIUS),
-                e -> e.isAlive() && e.isTame()
-        );
-
-        return !alliesNearby.isEmpty();
+        // Must be leader, alive, and cooldown expired
+        return howler.isLeader()
+                && howler.isAlive()
+                && currentTick >= nextAllowedHowl;
     }
 
     @Override
     public void start() {
-        Level level = voidHowler.level();
-
-        List<LunarWolfEntity> alliesNearby = level.getEntitiesOfClass(
-                LunarWolfEntity.class,
-                voidHowler.getBoundingBox().inflate(BUFF_RADIUS),
-                e -> e.isAlive() && e.isTame()
-        );
+        long currentTick = howler.level().getGameTime();
+        nextAllowedHowl = currentTick + COOLDOWN_TICKS;
 
         // Play howl sound
-        level.playSound(null, voidHowler.blockPosition(), ModSounds.VOID_HOWLER_HOWL.get(), SoundSource.HOSTILE, 1.2F, 1.0F);
+        howler.level().playSound(null, howler.blockPosition(), ModSounds.VOID_HOWLER_HOWL.get(), SoundSource.HOSTILE, 1.0F, 1.0F);
 
-        // Apply strength buff to each
-        for (LunarWolfEntity wolf : alliesNearby) {
-            wolf.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, BUFF_DURATION, 1)); // Strength II
+        // Spawn particles for effect
+        if (howler.level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(ParticleTypes.WITCH, howler.getX(), howler.getY() + 1, howler.getZ(), 30, 1, 1, 1, 0.1);
         }
 
-        cooldownTicks = MAX_COOLDOWN;
+        // Apply role-based buff to nearby LunarWolves
+        AABB area = howler.getBoundingBox().inflate(30.0D);
+        List<LunarWolfEntity> allies = howler.level().getEntitiesOfClass(LunarWolfEntity.class, area);
+
+        for (LunarWolfEntity wolf : allies) {
+            if (!wolf.isAlive()) continue;
+
+            PackRole role = wolf.getPackRole();
+            switch (role) {
+                case LEADER -> {
+                    wolf.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 1, false, true));
+                    wolf.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 1, false, true));
+                }
+                case SCOUT -> {
+                    wolf.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 1, false, true));
+                }
+                case GUARDIAN -> {
+                    wolf.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 1, false, true));
+                    wolf.addEffect(new MobEffectInstance(MobEffects.HEALTH_BOOST, 200, 0, false, true));
+                }
+            }
+        }
     }
 }

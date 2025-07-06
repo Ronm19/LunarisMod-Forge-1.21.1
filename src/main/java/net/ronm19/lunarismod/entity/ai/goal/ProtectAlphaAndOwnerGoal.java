@@ -21,35 +21,36 @@ public class ProtectAlphaAndOwnerGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        // Find VoidHowler alpha nearby
+        // Leaders protect themselves by default, followers protect alpha and owner
+        if (follower.getPackRole() == null || follower.getPackRole().isLeader()) {
+            return false; // Leaders don’t protect others, just themselves
+        }
+
+        // Find nearby VoidHowler alpha
         LivingEntity alpha = findAlpha();
-        // Get the owner of the LunarWolf
         LivingEntity owner = follower.getOwner();
 
         if (alpha == null && owner == null) {
             return false;
         }
 
-        // Prioritize defending the alpha if present, else defend the owner
+        // Prioritize defending alpha, else owner
         LivingEntity defendEntity = alpha != null ? alpha : owner;
 
-        // Find hostile mobs or players near defendEntity within 10 blocks
         List<LivingEntity> threats = follower.level().getEntitiesOfClass(
                 LivingEntity.class,
-                defendEntity.getBoundingBox().inflate(10.0D),
-                e -> (e instanceof Monster || e instanceof Player) && e.isAlive() && e.distanceTo(defendEntity) < 10.0D
+                defendEntity.getBoundingBox().inflate(40.0D),
+                e -> (e instanceof Monster || e instanceof Player) && e.isAlive() && e.distanceTo(defendEntity) < 40.0D
         );
 
         if (threats.isEmpty()) {
             return false;
         }
 
-        // Select the closest threat
         defendTarget = threats.stream()
                 .min((a, b) -> Double.compare(a.distanceTo(defendEntity), b.distanceTo(defendEntity)))
                 .orElse(null);
 
-        // Only start if there's a new target different from current
         return defendTarget != null && defendTarget != follower.getTarget();
     }
 
@@ -65,7 +66,6 @@ public class ProtectAlphaAndOwnerGoal extends Goal {
     }
 
     private LivingEntity findAlpha() {
-        // Find VoidHowler marked as leader nearby (within 15 blocks)
         return follower.level().getEntitiesOfClass(VoidHowlerEntity.class,
                         follower.getBoundingBox().inflate(15.0D),
                         e -> e.isLeader() && e.isAlive())

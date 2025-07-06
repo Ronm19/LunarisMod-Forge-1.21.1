@@ -1,8 +1,9 @@
-// 1.21.1	2025-07-05T20:16:32.3906996	Item Models: lunarismod
+// 1.21.1	2025-07-06T22:53:08.7877195	Item Models: lunarismod
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/lunarismod/models/item/lunarwolf_spawn_egg.json
 efbbadd1c764fed5f1ca5f45f00c9db38375d505 assets/lunarismod/models/item/moon_fruit_stew.json
 bab35831497b6cded48c6d89e0bcb8b882db2c54 assets/lunarismod/models/item/noctriumgem.json
 5c924a91c539063eee5d02f6d86d04714781e222 assets/lunarismod/models/item/noctrium_axe.json
+5921ad59b4940dd8e951bb79f9ea6bfe8b289016 assets/lunarismod/models/item/noctrium_bone.json
 86b2b98edb2f8175fd693181ad0ede6d5b95fab7 assets/lunarismod/models/item/noctrium_boots.json
 021c0d424bb5654055d5f1f21838d2b931cb8cfc assets/lunarismod/models/item/noctrium_boots_amethyst_trim.json
 467297f81262677db932df6c9dc9d9bced768e21 assets/lunarismod/models/item/noctrium_boots_copper_trim.json

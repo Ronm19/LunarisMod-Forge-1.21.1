@@ -21,6 +21,8 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.NOCTRIUMGEM.get());
                         pOutput.accept(ModItems.RAW_NOCTRIUM_GEM.get());
 
+                        pOutput.accept(ModItems.NOCTRIUM_BONE.get());
+
                         pOutput.accept(ModItems.MOON_FRUIT_STEW.get());
 
                         pOutput.accept(ModItems.NOCTRIUM_SWORD.get());

@@ -16,6 +16,7 @@ public class CallPackGoal extends Goal {
     private static final int COOLDOWN = 600; // 30 seconds
     private static final int BUFF_DURATION = 200; // 10 seconds
     private static final double CALL_RADIUS = 40.0D;
+    private static final double MIN_DISTANCE_TO_CALL = 10.0D; // Only call wolves farther than this
 
     public CallPackGoal(VoidHowlerEntity alpha) {
         this.alpha = alpha;
@@ -35,7 +36,7 @@ public class CallPackGoal extends Goal {
         // Play howl sound
         alpha.level().playSound(null, alpha.blockPosition(), ModSounds.VOID_HOWLER_HOWL.get(), SoundSource.HOSTILE, 1.5F, 1.0F);
 
-        // Get nearby LunarWolves and apply buff or response
+        // Get nearby LunarWolves and apply buff or response only if far enough
         List<LunarWolfEntity> pack = alpha.level().getEntitiesOfClass(
                 LunarWolfEntity.class,
                 alpha.getBoundingBox().inflate(CALL_RADIUS),
@@ -43,10 +44,13 @@ public class CallPackGoal extends Goal {
         );
 
         for (LunarWolfEntity wolf : pack) {
-            // Give them Strength effect (can be customized)
-            wolf.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, BUFF_DURATION, 0));
-            // Optionally move them toward alpha
-            wolf.getNavigation().moveTo(alpha, 1.3D);
+            double dist = wolf.distanceTo(alpha);
+            if (dist > MIN_DISTANCE_TO_CALL) {
+                // Give them Strength effect (can be customized)
+                wolf.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, BUFF_DURATION, 0));
+                // Move them toward alpha
+                wolf.getNavigation().moveTo(alpha, 1.3D);
+            }
         }
     }
 }
