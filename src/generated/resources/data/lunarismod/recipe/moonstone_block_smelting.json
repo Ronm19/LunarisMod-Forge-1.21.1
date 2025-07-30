@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 200,
+  "experience": 1.0,
+  "ingredient": {
+    "item": "lunarismod:raw_noctrium_block"
+  },
+  "result": {
+    "id": "lunarismod:moonstone_block"
+  }
+}

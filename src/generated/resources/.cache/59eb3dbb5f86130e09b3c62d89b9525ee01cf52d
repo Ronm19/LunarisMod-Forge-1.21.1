@@ -1,4 +1,9 @@
-// 1.21.1	2025-07-03T01:26:39.4117408	Loot Tables
+// 1.21.1	2025-07-26T00:26:04.8050565	Loot Tables
+767429405ca1b3f90f498faf506605ae64c34762 data/lunarismod/loot_table/blocks/husk_stone_block.json
+929fee420681b9239901a74adcd8eef1de2a994e data/lunarismod/loot_table/blocks/lunar_dirt_block.json
+41915abc4f79ec7852fcd2ec8d06b98bd5fc59bc data/lunarismod/loot_table/blocks/lunar_grass_block.json
+4e11e786166ba5730807eaf576fb613b742f957f data/lunarismod/loot_table/blocks/lunar_stone_block.json
+b7c38d69b35ce5a0cf2ecbc63dcdee06e28923a1 data/lunarismod/loot_table/blocks/moonstone_block.json
 3e1bea4f57c463045c6d72a79b58440d40d3780d data/lunarismod/loot_table/blocks/noctrium_block.json
 c29ffcba914315b3151e1b1ac6b0b01738cb74bb data/lunarismod/loot_table/blocks/noctrium_button.json
 a31e5b247700cc869e55fb57b1e8a349c8fae3c9 data/lunarismod/loot_table/blocks/noctrium_deepslate_ore.json

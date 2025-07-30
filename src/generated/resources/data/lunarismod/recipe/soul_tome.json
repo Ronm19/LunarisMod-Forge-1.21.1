@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:book"
+    },
+    "G": {
+      "item": "lunarismod:lunar_herobrine_gem"
+    },
+    "P": {
+      "item": "minecraft:phantom_membrane"
+    },
+    "S": {
+      "item": "minecraft:soul_sand"
+    }
+  },
+  "pattern": [
+    " P ",
+    "GBG",
+    " S "
+  ],
+  "result": {
+    "count": 1,
+    "id": "lunarismod:soul_tome"
+  }
+}

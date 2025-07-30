@@ -1,9 +1,10 @@
-// 1.21.1	2025-07-03T01:26:39.4102845	Tags for minecraft:block mod id lunarismod
+// 1.21.1	2025-07-26T00:26:04.7999408	Tags for minecraft:block mod id lunarismod
 9a5bfa3d3b382e09534f61c356ed5edbbceddd3b data/lunarismod/tags/block/incorrect_for_noctrium_tool.json
-09e58e267290e5bc74837aea4d5156a1bbefe240 data/lunarismod/tags/block/needs_noctrium_tool.json
+38d0771bdf4f7055f76deb80c1db9c7afca106d1 data/lunarismod/tags/block/needs_noctrium_tool.json
 f755dc135625deaf4ba180ad91d63a959330ba09 data/minecraft/tags/block/fences.json
 e7a781d45e06c81c3ccd7e2bb7f25f8a0f22611e data/minecraft/tags/block/fence_gates.json
 42b40d989032a6c2750b63966acd026da747d924 data/minecraft/tags/block/logs_that_burn.json
-f95ce9a559c84bdb3e748e202c79f0d11ad7099b data/minecraft/tags/block/mineable/pickaxe.json
-eac1d102fd9262427c2170a2e70facd12825e5e7 data/minecraft/tags/block/needs_iron_tool.json
+965744d3c58483dfd461004ccdcf201abeb139f3 data/minecraft/tags/block/mineable/pickaxe.json
+ea38f7fa41e72943b5e5108bcb468b99a2a36a8b data/minecraft/tags/block/mineable/shovel.json
+26615761bd9aa85c652233ae781f097b2a7b657f data/minecraft/tags/block/needs_iron_tool.json
 b3e409926a374e6b3c17f0863cf34e96de1d3369 data/minecraft/tags/block/walls.json

@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "lunarismod:void_grove",
+  "spawners": {
+    "type": "lunarismod:void_phantom",
+    "maxCount": 6,
+    "minCount": 4,
+    "weight": 40
+  }
+}

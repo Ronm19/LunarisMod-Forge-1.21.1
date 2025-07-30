@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "minecraft:ender_pearl"
+    },
+    "N": {
+      "item": "lunarismod:noctriumgem"
+    },
+    "R": {
+      "item": "minecraft:ender_eye"
+    }
+  },
+  "pattern": [
+    " E ",
+    "NRN",
+    " E "
+  ],
+  "result": {
+    "count": 1,
+    "id": "lunarismod:void_pulse"
+  }
+}

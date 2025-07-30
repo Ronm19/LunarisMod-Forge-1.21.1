@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "lunarismod:void_grove",
+  "spawners": {
+    "type": "lunarismod:lunar_enderman",
+    "maxCount": 9,
+    "minCount": 5,
+    "weight": 40
+  }
+}

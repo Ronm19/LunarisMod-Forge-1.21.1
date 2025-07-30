@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "lunarismod:vireclave",
+  "spawners": {
+    "type": "lunarismod:void_eye",
+    "maxCount": 4,
+    "minCount": 3,
+    "weight": 40
+  }
+}

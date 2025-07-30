@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "lunarismod:vireclave",
+  "spawners": {
+    "type": "lunarismod:lunar_zombie_king",
+    "maxCount": 1,
+    "minCount": 1,
+    "weight": 10
+  }
+}

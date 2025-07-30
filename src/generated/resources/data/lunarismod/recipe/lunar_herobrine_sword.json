@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "L": {
+      "item": "lunarismod:lunar_herobrine_gem"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    " L ",
+    " L ",
+    " S "
+  ],
+  "result": {
+    "count": 1,
+    "id": "lunarismod:lunar_herobrine_sword"
+  }
+}

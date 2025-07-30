@@ -1,0 +1,22 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": [
+    "minecraft:forest",
+    "minecraft:dark_forest",
+    "minecraft:birch_forest",
+    "minecraft:old_growth_birch_forest",
+    "minecraft:old_growth_pine_taiga",
+    "minecraft:taiga",
+    "minecraft:snowy_taiga",
+    "minecraft:windswept_forest",
+    "minecraft:grove",
+    "minecraft:plains",
+    "lunarismod:vireclave"
+  ],
+  "spawners": {
+    "type": "lunarismod:lunar_zombie",
+    "maxCount": 8,
+    "minCount": 4,
+    "weight": 20
+  }
+}
