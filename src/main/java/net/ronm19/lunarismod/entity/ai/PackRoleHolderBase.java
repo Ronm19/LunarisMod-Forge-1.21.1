@@ -1,5 +1,7 @@
 package net.ronm19.lunarismod.entity.ai;
 
+import net.ronm19.lunarismod.entity.ai.interfaces.IPackRoleHolder;
+
 public abstract class PackRoleHolderBase implements IPackRoleHolder {
     private PackRole packRole = PackRole.FOLLOWER;
 

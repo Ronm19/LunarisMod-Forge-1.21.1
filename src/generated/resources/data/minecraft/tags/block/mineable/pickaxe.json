@@ -11,6 +11,9 @@
     "lunarismod:noctrium_trapdoor",
     "lunarismod:noctrium_stairs",
     "lunarismod:noctrium_slab",
-    "lunarismod:noctrium_pressure_plate"
+    "lunarismod:noctrium_pressure_plate",
+    "lunarismod:lunar_stone_block",
+    "lunarismod:moonstone_block",
+    "lunarismod:husk_stone_block"
   ]
 }

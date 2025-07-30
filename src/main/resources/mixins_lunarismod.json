@@ -1,11 +1,14 @@
 {
   "required": true,
-  "package": "com.github.lunarismod.mixin",
+  "package": "net.ronm19.lunarismod.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "LunarSkyMixin"
+    "ExampleMixin"
   ],
-  "client": [],
+  "client": [
+    "ClientOnlyMixin"
+
+  ],
   "injectors": {
     "defaultRequire": 1
   }

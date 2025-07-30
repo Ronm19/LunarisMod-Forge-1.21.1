@@ -48,8 +48,15 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.RAW_NOCTRIUM_GEM.get());
         basicItem(ModItems.NOCTRIUMGEM.get());
         basicItem(ModItems.NOCTRIUM_BONE.get());
+        basicItem(ModItems.MOONSTONE.get());
+        basicItem(ModItems.VOID_PULSE.get());
+        basicItem(ModItems.LUNAR_HEROBRINE_GEM.get());
+
+
+        basicItem(ModItems.SOUL_TOME.get());
 
         basicItem(ModItems.MOON_FRUIT_STEW.get());
+        basicItem(ModItems.MOONPPLE.get());
 
         buttonItem(ModBlocks.NOCTRIUM_BUTTON, ModBlocks.NOCTRIUM_BLOCK);
         fenceItem(ModBlocks.NOCTRIUM_FENCE, ModBlocks.NOCTRIUM_BLOCK);
@@ -57,22 +64,42 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         simpleBlockItem(ModBlocks.NOCTRIUM_DOOR);
 
+
         handheldItem(ModItems.NOCTRIUM_SWORD);
         handheldItem(ModItems.NOCTRIUM_PICKAXE);
         handheldItem(ModItems.NOCTRIUM_SHOVEL);
         handheldItem(ModItems.NOCTRIUM_AXE);
         handheldItem(ModItems.NOCTRIUM_HOE);
         handheldItem(ModItems.NOCTRIUM_HAMMER);
+        handheldItem(ModItems.LUNAR_HEROBRINE_SWORD);
 
         trimmedArmorItem(ModItems.NOCTRIUM_HELMET);
         trimmedArmorItem(ModItems.NOCTRIUM_CHESTPLATE);
         trimmedArmorItem(ModItems.NOCTRIUM_LEGGINGS);
         trimmedArmorItem(ModItems.NOCTRIUM_BOOTS);
 
+        trimmedArmorItem(ModItems.MOON_HELMET);
+        trimmedArmorItem(ModItems.MOON_CHESTPLATE);
+        trimmedArmorItem(ModItems.MOON_LEGGINGS);
+        trimmedArmorItem(ModItems.MOON_BOOTS);
+
         saplingItem(ModBlocks.NOCTRIUM_SAPLING);
+
+        cubeBottomTopBlockItem(ModBlocks.LUNAR_GRASS_BLOCK);
 
         withExistingParent(ModItems.LUNARWOLF_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.VOIDHOWLER_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.LUNARSENTINEL_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.LUNAR_CREEPER_SPAWN_EGG.getId().getPath(),mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.VOID_PHANTOM_SPAWN_EGG.getId().getPath(),mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.VOID_EYE_SPAWN_EGG.getId().getPath(),mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.LUNAR_ENDERMAN_SPAWN_EGG.getId().getPath(),mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.VELOMIR_SPAWN_EGG.getId().getPath(),mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.LUNAR_ZOMBIE_SPAWN_EGG.getId().getPath(),mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.LUNAR_ZOMBIE_KING_SPAWN_EGG.getId().getPath(),mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.LUNAR_HEROBRINE_SPAWN_EGG.getId().getPath(),mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.LUNAREON_SPAWN_EGG.getId().getPath(),mcLoc("item/template_spawn_egg"));
+
     }
 
     private ItemModelBuilder saplingItem(RegistryObject<Block> item) {
@@ -154,5 +181,15 @@ public class ModItemModelProvider extends ItemModelProvider {
         return withExistingParent(item.getId().getPath(),
                 ResourceLocation.parse("item/generated")).texture("layer0",
                 ResourceLocation.fromNamespaceAndPath(LunarisMod.MOD_ID,"item/" + item.getId().getPath()));
+    }
+
+    private ItemModelBuilder cubeBottomTopBlockItem(RegistryObject<Block> block) {
+        String path = block.getId().getPath();
+
+        return withExistingParent(path,
+                mcLoc("block/cube_bottom_top"))
+                .texture("top", modLoc("block/" + path + "_top"))
+                .texture("side", modLoc("block/" + path + "_side"))
+                .texture("bottom", modLoc("block/" + path + "_bottom"));
     }
 }

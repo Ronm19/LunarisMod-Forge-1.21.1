@@ -12,7 +12,8 @@ import java.util.List;
 public class PackFlankGoal extends Goal {
     private final LunarWolfEntity wolf;
     private final double speed;
-    private List<LunarWolfEntity> pack;
+
+    private List<LunarWolfEntity> flankPack;
     private LivingEntity target;
 
     public PackFlankGoal(LunarWolfEntity wolf, double speed) {
@@ -23,59 +24,59 @@ public class PackFlankGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (!wolf.isTame() || wolf.getOwner() == null) return false;
+        if (!wolf.isTame() || wolf.getOwner() == null || wolf.isLeader()) return false;
 
-        // Find the leader nearby
-        VoidHowlerEntity leader = findLeader();
-
+        VoidHowlerEntity leader = locateLeader();
         if (leader == null) return false;
 
-        target = leader.getPackTarget();
-        if (target == null || !target.isAlive()) return false;
+        LivingEntity packTarget = leader.getPackTarget();
+        if (packTarget == null || !packTarget.isAlive()) return false;
 
-        // Pack members should flank only if their target matches leader’s target
+        target = packTarget;
         return wolf.getTarget() == target;
     }
 
     @Override
     public void start() {
-        // Find all pack members (exclude leader)
-        pack = wolf.level().getEntitiesOfClass(LunarWolfEntity.class,
+        flankPack = wolf.level().getEntitiesOfClass(
+                LunarWolfEntity.class,
                 wolf.getBoundingBox().inflate(40),
-                w -> w.isAlive() && w.getTarget() == target && !w.isLeader());
+                member -> member.isAlive() && member.getTarget() == target && !member.isLeader()
+        );
 
         assignFlankPositions();
     }
 
     @Override
     public void tick() {
-        assignFlankPositions(); // keep updating as target moves
-    }
-
-    private void assignFlankPositions() {
-        int packSize = pack.size();
-        if (packSize == 0) return;
-
-        double radius = 4.0;
-        Vec3 targetPos = target.position();
-
-        for (int i = 0; i < packSize; i++) {
-            LunarWolfEntity member = pack.get(i);
-
-            double angle = (2 * Math.PI / packSize) * i;
-            double offsetX = radius * Math.cos(angle);
-            double offsetZ = radius * Math.sin(angle);
-
-            Vec3 flankPos = new Vec3(targetPos.x + offsetX, targetPos.y, targetPos.z + offsetZ);
-
-            member.getNavigation().moveTo(flankPos.x, flankPos.y, flankPos.z, speed);
+        if (target != null && target.isAlive()) {
+            assignFlankPositions(); // keep syncing with target movement
         }
     }
 
-    private VoidHowlerEntity findLeader() {
-        return wolf.level().getEntitiesOfClass(VoidHowlerEntity.class,
-                        wolf.getBoundingBox().inflate(40),
-                        VoidHowlerEntity::isLeader)
-                .stream().findFirst().orElse(null);
+    private void assignFlankPositions() {
+        if (flankPack.isEmpty()) return;
+
+        Vec3 center = target.position();
+        double radius = 4.0;
+
+        for (int i = 0; i < flankPack.size(); i++) {
+            LunarWolfEntity member = flankPack.get(i);
+
+            double angle = (2 * Math.PI / flankPack.size()) * i;
+            double offsetX = radius * Math.cos(angle);
+            double offsetZ = radius * Math.sin(angle);
+
+            Vec3 flankSpot = center.add(offsetX, 0, offsetZ);
+            member.getNavigation().moveTo(flankSpot.x, flankSpot.y, flankSpot.z, speed);
+        }
+    }
+
+    private VoidHowlerEntity locateLeader() {
+        return wolf.level().getEntitiesOfClass(
+                VoidHowlerEntity.class,
+                wolf.getBoundingBox().inflate(40),
+                VoidHowlerEntity::isLeader
+        ).stream().findFirst().orElse(null);
     }
 }

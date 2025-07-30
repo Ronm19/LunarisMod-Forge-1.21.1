@@ -42,7 +42,7 @@ public class LunarEffect extends MobEffect {
             ((ServerLevel) entity.level()).sendParticles(
                     ParticleTypes.END_ROD,
                     entity.getX(), entity.getY() + 1, entity.getZ(),
-                    10,
+                    4,
                     0.4, 0.4, 0.4,
                     0.01
             );

@@ -1,70 +1,76 @@
 package net.ronm19.lunarismod.entity.ai.goal;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class PatrolWithMemoryGoal extends Goal {
     protected final Mob mob;
     protected final Level world;
 
-    // Stores intrusion points and the game time (in ticks) they were recorded
-    protected final Map<BlockPos, Long> intrusionMemory = new HashMap<>();
-
-    // Default constants (can be overridden)
+    private final Map<BlockPos, Long> intrusionMemory = new HashMap<>();
     private static final long DEFAULT_MEMORY_DURATION = 6000L; // 5 minutes
-    private static final int DEFAULT_PATH_COOLDOWN_TICKS = 40; // 2 seconds
+    private static final int DEFAULT_PATH_COOLDOWN_TICKS = 40;
 
-    private int pathCooldown = 0;
+    private long nextAllowedPatrolTick = 0;
     private BlockPos currentTarget = null;
 
     public PatrolWithMemoryGoal(Mob mob) {
         this.mob = mob;
         this.world = mob.level();
+        this.setFlags(EnumSet.of(Flag.MOVE));
     }
 
-    // External call to add intrusion point
     public void rememberIntrusion(BlockPos pos) {
-        long currentTime = world.getGameTime();
-        intrusionMemory.put(pos, currentTime);
+        intrusionMemory.put(pos, world.getGameTime());
     }
 
     @Override
     public boolean canUse() {
-        if (pathCooldown > 0) return false;
+        if (mob.getTarget() != null) return false;
+
+        long now = world.getGameTime();
+        if (now < nextAllowedPatrolTick) return false;
 
         cleanOldMemories();
-
-        if (intrusionMemory.isEmpty()) return false;
-
         currentTarget = findClosestIntrusion();
-
         return currentTarget != null;
-    }
-
-    @Override
-    public boolean canContinueToUse() {
-        return mob.getNavigation().isInProgress() && currentTarget != null;
     }
 
     @Override
     public void start() {
         if (currentTarget != null) {
-            mob.getNavigation().moveTo(currentTarget.getX() + 0.5, currentTarget.getY(), currentTarget.getZ() + 0.5, 1.0);
-            pathCooldown = getPathCooldownTicks();
+            Vec3 center = new Vec3(
+                    currentTarget.getX() + 0.5,
+                    currentTarget.getY(),
+                    currentTarget.getZ() + 0.5
+            );
+
+            mob.getNavigation().moveTo(center.x, center.y, center.z, 1.0);
+            nextAllowedPatrolTick = world.getGameTime() + getPathCooldownTicks();
         }
     }
 
     @Override
-    public void tick() {
-        if (pathCooldown > 0) pathCooldown--;
+    public boolean canContinueToUse() {
+        return currentTarget != null && mob.getNavigation().isInProgress();
+    }
 
-        if (currentTarget != null && mob.position().distanceTo(
-                new net.minecraft.world.phys.Vec3(currentTarget.getX() + 0.5, currentTarget.getY(), currentTarget.getZ() + 0.5)) < 2.0) {
+    @Override
+    public void tick() {
+        if (currentTarget == null) return;
+
+        Vec3 targetVec = new Vec3(
+                currentTarget.getX() + 0.5,
+                currentTarget.getY(),
+                currentTarget.getZ() + 0.5
+        );
+
+        if (mob.position().distanceTo(targetVec) < 2.0) {
             intrusionMemory.remove(currentTarget);
             currentTarget = null;
         }
@@ -72,14 +78,7 @@ public class PatrolWithMemoryGoal extends Goal {
 
     protected void cleanOldMemories() {
         long now = world.getGameTime();
-        List<BlockPos> expired = intrusionMemory.entrySet().stream()
-                .filter(entry -> now - entry.getValue() > getMemoryDuration())
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
-
-        for (BlockPos pos : expired) {
-            intrusionMemory.remove(pos);
-        }
+        intrusionMemory.entrySet().removeIf(entry -> now - entry.getValue() > getMemoryDuration());
     }
 
     protected BlockPos findClosestIntrusion() {
@@ -89,8 +88,6 @@ public class PatrolWithMemoryGoal extends Goal {
                 .orElse(null);
     }
 
-    // Methods to override in subclasses for customization
-
     protected long getMemoryDuration() {
         return DEFAULT_MEMORY_DURATION;
     }
@@ -99,4 +96,3 @@ public class PatrolWithMemoryGoal extends Goal {
         return DEFAULT_PATH_COOLDOWN_TICKS;
     }
 }
-

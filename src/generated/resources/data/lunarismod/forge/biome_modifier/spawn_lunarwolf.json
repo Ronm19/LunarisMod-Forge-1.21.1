@@ -10,7 +10,8 @@
     "minecraft:snowy_taiga",
     "minecraft:windswept_forest",
     "minecraft:grove",
-    "minecraft:plains"
+    "minecraft:plains",
+    "lunarismod:vireclave"
   ],
   "spawners": {
     "type": "lunarismod:lunarwolf",

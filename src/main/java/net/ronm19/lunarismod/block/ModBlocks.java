@@ -1,8 +1,10 @@
 package net.ronm19.lunarismod.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
@@ -16,13 +18,16 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.ronm19.lunarismod.LunarisMod;
+import net.ronm19.lunarismod.block.custom.HuskstoneBlock;
 import net.ronm19.lunarismod.block.custom.ModFlammableRotatedPillarBlock;
+import net.ronm19.lunarismod.block.custom.ModSapplingBlock;
+import net.ronm19.lunarismod.entity.ModEntities;
+import net.ronm19.lunarismod.entity.custom.LunarZombieEntity;
 import net.ronm19.lunarismod.item.ModItems;
 import net.ronm19.lunarismod.worldgen.tree.ModTreeGrowers;
 
 import java.util.function.Supplier;
 
-import static net.minecraft.world.item.Items.registerBlock;
 
 public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS =
@@ -34,6 +39,25 @@ public class ModBlocks {
     public static final RegistryObject<Block> RAW_NOCTRIUM_BLOCK = registerBlock("raw_noctrium_block",
             () -> new Block(BlockBehaviour.Properties.of()
                     .strength(4f).requiresCorrectToolForDrops()));
+
+    public static final RegistryObject<Block> LUNAR_GRASS_BLOCK = registerBlock("lunar_grass_block",
+            () -> new GrassBlock(BlockBehaviour.Properties.of()
+                    .strength(3f).requiresCorrectToolForDrops().sound(SoundType.GRASS)));
+    public static final RegistryObject<Block> LUNAR_DIRT_BLOCK = registerBlock("lunar_dirt_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .strength(3f).requiresCorrectToolForDrops().sound(SoundType.ROOTED_DIRT)));
+    public static final RegistryObject<Block> LUNAR_STONE_BLOCK = registerBlock("lunar_stone_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .strength(4f).requiresCorrectToolForDrops().sound(SoundType.STONE)));
+
+    public static final RegistryObject<Block> MOONSTONE_BLOCK = registerBlock("moonstone_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .strength(4f).requiresCorrectToolForDrops().sound(SoundType.DEEPSLATE)));
+
+    public static final RegistryObject<Block> HUSK_STONE_BLOCK = registerBlock("husk_stone_block",
+            () -> new HuskstoneBlock(BlockBehaviour.Properties.of().randomTicks()
+                    .strength(4f).requiresCorrectToolForDrops().sound(SoundType.STONE).isValidSpawn((state, getter, pos, type) ->
+                            state.getValue(HuskstoneBlock.ACTIVE) && type == ModEntities.LUNAR_ZOMBIE.get())));
 
     public static final RegistryObject<Block> NOCTRIUM_ORE = registerBlock("noctrium_ore",
             () -> new DropExperienceBlock(UniformInt.of(2,4),BlockBehaviour.Properties.of()
@@ -111,12 +135,16 @@ public class ModBlocks {
             });
 
     public static final RegistryObject<Block> NOCTRIUM_SAPLING = registerBlock("noctrium_sapling",
-            () -> new SaplingBlock(ModTreeGrowers.NOCTRIUM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
+            () -> new ModSapplingBlock(ModTreeGrowers.NOCTRIUM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING), ModBlocks.LUNAR_GRASS_BLOCK.get()));
 
     private static<T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);
         return toReturn;
+    }
+
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return null;
     }
 
     private static<T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {

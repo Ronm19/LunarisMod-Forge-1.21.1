@@ -63,10 +63,10 @@ public class VoidHowlerEntity extends TamableAnimal {
         this.goalSelector.addGoal(11, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(12, new MoonPhaseBuffGoal(this));
 
-        this.targetSelector.addGoal(13, new OwnerHurtByTargetGoal(this));
-        this.targetSelector.addGoal(14, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(15, new HurtByTargetGoal(this).setAlertOthers());
-        this.targetSelector.addGoal(16, new NearestAttackableTargetGoal<>(this, Monster.class, true));
+        this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(3, new HurtByTargetGoal(this).setAlertOthers());
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Monster.class, true));
     }
 
     public static AttributeSupplier.Builder createAttributes() {

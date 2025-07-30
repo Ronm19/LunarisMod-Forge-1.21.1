@@ -12,7 +12,8 @@ import java.util.List;
 
 public class PackRetreatGoal extends Goal {
     private final LunarWolfEntity wolf;
-    private int retreatCooldown = 0;
+    private static final int RETREAT_COOLDOWN_TICKS = 100;
+    private long nextRetreatAllowedTick = 0;
 
     public PackRetreatGoal(LunarWolfEntity wolf) {
         this.wolf = wolf;
@@ -21,13 +22,9 @@ public class PackRetreatGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (retreatCooldown > 0) {
-            retreatCooldown--;
-            return false;
-        }
-
-        if (wolf.getPackRole() == PackRole.LEADER)
-            return false; // Leaders don't retreat
+        long currentTick = wolf.level().getGameTime();
+        if (currentTick < nextRetreatAllowedTick) return false;
+        if (wolf.getPackRole() == PackRole.LEADER) return false;
 
         LivingEntity target = wolf.getTarget();
         return target != null && wolf.getHealth() < wolf.getMaxHealth() * 0.2;
@@ -36,39 +33,45 @@ public class PackRetreatGoal extends Goal {
     @Override
     public boolean canContinueToUse() {
         LivingEntity target = wolf.getTarget();
-        return target != null && wolf.getHealth() < wolf.getMaxHealth() * 0.3;
+        return target != null && target.isAlive() && wolf.getHealth() < wolf.getMaxHealth() * 0.3;
     }
 
     @Override
     public void start() {
-        LivingEntity target = wolf.getTarget();
-        if (target == null) return;
-
         wolf.setRetreating(true);
+        LivingEntity threat = wolf.getTarget();
+        if (threat == null) return;
 
-        // Calculate retreat vector (away from threat)
-        Vec3 direction = wolf.position().subtract(target.position()).normalize().scale(10.0);
-        Vec3 retreatPos = wolf.position().add(direction);
+        retreatFrom(threat);
+        requestAlphaSupport(threat);
+    }
 
-        wolf.getNavigation().moveTo(retreatPos.x, retreatPos.y, retreatPos.z, 1.5D);
+    @Override
+    public void stop() {
+        wolf.setRetreating(false);
+        wolf.getNavigation().stop();
+        nextRetreatAllowedTick = wolf.level().getGameTime() + RETREAT_COOLDOWN_TICKS;
+    }
 
-        // Call nearby leaders for assistance
+    private void retreatFrom(LivingEntity threat) {
+        Vec3 retreatDirection = wolf.position().subtract(threat.position()).normalize().scale(10.0);
+        Vec3 retreatPos = wolf.position().add(retreatDirection);
+
+        if (wolf.getNavigation().isDone()) {
+            wolf.getNavigation().moveTo(retreatPos.x, retreatPos.y, retreatPos.z, 1.5D);
+        }
+    }
+
+    private void requestAlphaSupport(LivingEntity threat) {
         List<VoidHowlerEntity> nearbyLeaders = wolf.level().getEntitiesOfClass(
                 VoidHowlerEntity.class,
                 wolf.getBoundingBox().inflate(30),
                 leader -> leader.isAlive() && leader.isLeader()
         );
 
-        for (VoidHowlerEntity leader : nearbyLeaders) {
-            leader.setPackTarget(target);
-            leader.setLastCallTime(0); // force cooldown reset
+        for (VoidHowlerEntity alpha : nearbyLeaders) {
+            alpha.setPackTarget(threat);
+            alpha.setLastCallTime(0); // Override cooldown to rally
         }
-    }
-
-    @Override
-    public void stop() {
-        wolf.getNavigation().stop();
-        retreatCooldown = 100; // Cooldown before retry
-        wolf.setRetreating(false);
     }
 }
