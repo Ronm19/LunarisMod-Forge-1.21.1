@@ -11,6 +11,7 @@ import net.ronm19.lunarismod.enchantment.ModEnchantments;
 import net.ronm19.lunarismod.worldgen.ModBiomeModifiers;
 import net.ronm19.lunarismod.worldgen.ModConfiguredFeatures;
 import net.ronm19.lunarismod.worldgen.ModPlacedFeatures;
+import net.ronm19.lunarismod.worldgen.biome.ModBiomes;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -20,7 +21,8 @@ public class ModDatapackEntries extends DatapackBuiltinEntriesProvider {
             .add(Registries.ENCHANTMENT, ModEnchantments::bootstrap)
             .add(Registries.CONFIGURED_FEATURE, ModConfiguredFeatures::bootstrap)
             .add(Registries.PLACED_FEATURE, ModPlacedFeatures::bootstrap)
-            .add(ForgeRegistries.Keys.BIOME_MODIFIERS, ModBiomeModifiers::bootstrap);
+            .add(ForgeRegistries.Keys.BIOME_MODIFIERS, ModBiomeModifiers::bootstrap)
+            .add(Registries.BIOME, ModBiomes::bootstrap);
 
 
 

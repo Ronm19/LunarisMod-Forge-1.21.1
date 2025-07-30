@@ -27,6 +27,16 @@ public class ModArmorMaterials {
                 attribute.put(ArmorItem.Type.BODY, 21);
             }), 18, 6f, 0.15f, () -> ModItems.NOCTRIUMGEM.get());
 
+
+    public static final Holder<ArmorMaterial> MOON_ARMOR_MATERIAL = register("moon", Util.make(new EnumMap<>(ArmorItem.Type.class),
+            attribute -> {
+                attribute.put(ArmorItem.Type.BOOTS, 15);
+                attribute.put(ArmorItem.Type.LEGGINGS, 17);
+                attribute.put(ArmorItem.Type.CHESTPLATE, 19);
+                attribute.put(ArmorItem.Type.HELMET, 15);
+                attribute.put(ArmorItem.Type.BODY, 21);
+            }), 18, 6f, 0.15f, () -> ModItems.MOONSTONE.get());
+
     private static Holder<ArmorMaterial> register(String name, EnumMap<ArmorItem.Type, Integer> typeProtection,
                                                   int enchantability, float toughness, float knockbackResistance,
                                                   Supplier<Item> ingredientItem) {

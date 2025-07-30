@@ -4,6 +4,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.ronm19.lunarismod.LunarisMod;
@@ -25,7 +27,11 @@ public class ModItemTagProvider extends ItemTagsProvider {
                 .add(ModItems.NOCTRIUM_HELMET.get())
                 .add(ModItems.NOCTRIUM_CHESTPLATE.get())
                 .add(ModItems.NOCTRIUM_LEGGINGS.get())
-                .add(ModItems.NOCTRIUM_BOOTS.get());
+                .add(ModItems.NOCTRIUM_BOOTS.get())
+                .add(ModItems.MOON_HELMET.get())
+                .add(ModItems.MOON_CHESTPLATE.get())
+                .add(ModItems.MOON_LEGGINGS.get())
+                .add(ModItems.MOON_BOOTS.get());
 
 
         tag(ItemTags.LOGS_THAT_BURN)

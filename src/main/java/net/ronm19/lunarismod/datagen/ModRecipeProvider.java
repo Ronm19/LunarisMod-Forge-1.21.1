@@ -27,12 +27,22 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         List<ItemLike> NOCTRIUM_SMETABLES = List.of(ModItems.RAW_NOCTRIUM_GEM.get(),
                 ModBlocks.NOCTRIUM_ORE.get(), ModBlocks.NOCTRIUM_DEEPSLATE_ORE.get());
 
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.NOCTRIUM_BLOCK.get())
                 .pattern("NNN")
                 .pattern("NNN")
                 .pattern("NNN")
                 .define('N', ModItems.NOCTRIUMGEM.get())
                 .unlockedBy(getHasName(ModItems.NOCTRIUMGEM.get()), has(ModItems.NOCTRIUMGEM.get()))
+                .save(pRecipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.NOCTRIUM_BONE.get())
+                .pattern(" N ")
+                .pattern(" B ")
+                .pattern("   ")
+                .define('N', ModItems.NOCTRIUMGEM.get())
+                .define('B', Items.BONE)
+                .unlockedBy(getHasName(Items.BONE), has (Items.BONE))
                 .save(pRecipeOutput);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, ModItems.MOON_FRUIT_STEW.get())
@@ -52,6 +62,15 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('N', ModItems.NOCTRIUMGEM.get())
                 .define('S', Items.STICK)
                 .unlockedBy(getHasName(ModItems.NOCTRIUMGEM.get()), has(ModItems.NOCTRIUMGEM.get()))
+                .save(pRecipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.LUNAR_HEROBRINE_SWORD.get())
+                .pattern(" L ")
+                .pattern(" L ")
+                .pattern(" S ")
+                .define('L', ModItems.LUNAR_HEROBRINE_GEM.get())
+                .define('S', Items.STICK)
+                .unlockedBy(getHasName(ModItems.LUNAR_HEROBRINE_GEM.get()), has(ModItems.LUNAR_HEROBRINE_GEM.get()))
                 .save(pRecipeOutput);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.NOCTRIUM_PICKAXE.get())
@@ -145,7 +164,25 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModBlocks.NOCTRIUM_LOG.get()), has(ModBlocks.NOCTRIUM_LOG.get()))
                 .save(pRecipeOutput);
 
-
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SOUL_TOME.get())
+                .pattern(" P ")
+                .pattern("GBG")
+                .pattern(" S ")
+                .define('P', Items.PHANTOM_MEMBRANE)
+                .define('G', ModItems.LUNAR_HEROBRINE_GEM.get())
+                .define('B', Items.BOOK)
+                .define('S', Items.SOUL_SAND)
+                .unlockedBy(getHasName(ModItems.LUNAR_HEROBRINE_GEM.get()), has(ModItems.LUNAR_HEROBRINE_GEM.get()))
+                .save(pRecipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.VOID_PULSE.get())
+                .pattern(" E ")
+                .pattern("NRN")
+                .pattern(" E ")
+                .define('E', Items.ENDER_PEARL)
+                .define('R', Items.ENDER_EYE)
+                .define('N', ModItems.NOCTRIUMGEM.get())
+                .unlockedBy(getHasName(ModItems.NOCTRIUMGEM.get()), has(ModItems.NOCTRIUMGEM.get()))
+                .save(pRecipeOutput);
 
 
 
@@ -155,6 +192,48 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         oreSmelting(pRecipeOutput, NOCTRIUM_SMETABLES, RecipeCategory.MISC, ModItems.NOCTRIUMGEM.get(), 0.29f, 200, "noctrium");
         oreBlasting(pRecipeOutput, NOCTRIUM_SMETABLES, RecipeCategory.MISC, ModItems.NOCTRIUMGEM.get(), 0.29f, 100, "noctrium");
+
+
+        // Custom Blasting Recipe: RAW_NOCTRIUM_BLOCK → MOONSTONE_BLOCK
+        SimpleCookingRecipeBuilder.blasting(
+                        Ingredient.of(ModBlocks.RAW_NOCTRIUM_BLOCK.get()),
+                        RecipeCategory.BUILDING_BLOCKS,
+                        ModBlocks.MOONSTONE_BLOCK.get(),
+                        0.7f, // experience
+                        100   // cooking time
+                ).unlockedBy(getHasName(ModBlocks.RAW_NOCTRIUM_BLOCK.get()), has(ModBlocks.RAW_NOCTRIUM_BLOCK.get()))
+                .save(pRecipeOutput, LunarisMod.MOD_ID + ":moonstone_block_blasting");
+
+        SimpleCookingRecipeBuilder.smelting(
+                        Ingredient.of(ModBlocks.RAW_NOCTRIUM_BLOCK.get()),
+                        RecipeCategory.BUILDING_BLOCKS,
+                        ModBlocks.MOONSTONE_BLOCK.get(),
+                        1.0f, // experience
+                        200   // cooking time
+                ).unlockedBy(getHasName(ModBlocks.RAW_NOCTRIUM_BLOCK.get()), has(ModBlocks.RAW_NOCTRIUM_BLOCK.get()))
+                .save(pRecipeOutput, LunarisMod.MOD_ID + ":moonstone_block_smelting");
+
+        // Custom Blasting Recipe: MOONSTONE_BLOCK = MOON stuff
+
+        SimpleCookingRecipeBuilder.blasting(
+                        Ingredient.of(ModBlocks.MOONSTONE_BLOCK.get()),
+                        RecipeCategory.MISC,
+                        ModItems.MOONSTONE.get(),
+                        1.0f, // experience
+                        100   // cooking time
+                ).unlockedBy(getHasName(ModBlocks.MOONSTONE_BLOCK.get()), has(ModBlocks.MOONSTONE_BLOCK.get()))
+                .save(pRecipeOutput, LunarisMod.MOD_ID + ":moonstone_block_blasting_direct");
+
+        SimpleCookingRecipeBuilder.smelting(
+                        Ingredient.of(ModBlocks.MOONSTONE_BLOCK.get()),
+                        RecipeCategory.MISC,
+                        ModItems.MOONSTONE.get(),
+                        1.0f, // experience
+                        200   // cooking time
+                ).unlockedBy(getHasName(ModBlocks.MOONSTONE_BLOCK.get()), has(ModBlocks.MOONSTONE_BLOCK.get()))
+                .save(pRecipeOutput, LunarisMod.MOD_ID + ":moonstone_block_smelting_direct");
+
+
 
         stairBuilder(ModBlocks.NOCTRIUM_STAIRS.get(), Ingredient.of(ModItems.NOCTRIUMGEM.get())).group("noctrium")
                 .unlockedBy(getHasName(ModItems.NOCTRIUMGEM.get()), has(ModItems.NOCTRIUMGEM.get())).save(pRecipeOutput);

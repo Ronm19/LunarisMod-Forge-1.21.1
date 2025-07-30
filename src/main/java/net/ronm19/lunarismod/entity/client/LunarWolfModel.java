@@ -96,6 +96,7 @@ public class LunarWolfModel<T extends LunarWolfEntity> extends HierarchicalModel
         // Animation triggers
         this.animateWalk(LunarWolfAnimations.ANIM_LUNARWOLF_WALKING, limbSwing, limbSwingAmount, 0.8f, 2.04167f);
         this.animate(entity.idleAnimationState, LunarWolfAnimations.ANIM_LUNARWOLF_IDLE, ageInTicks, 1f);
+
     }
 
     private void applyHeadRotation(float netHeadYaw, float headPitch) {

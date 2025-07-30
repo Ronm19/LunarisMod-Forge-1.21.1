@@ -14,16 +14,22 @@ public class ModCreativeModeTabs {
     public static DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, LunarisMod.MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> NOCTRIUM_ITEMS_TAB = CREATIVE_MODE_TABS.register("noctrium_items_tab",
+    public static final RegistryObject<CreativeModeTab> LUNARIS_ITEMS_TAB = CREATIVE_MODE_TABS.register("lunaris_items_tab",
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.NOCTRIUMGEM.get()))
-                    .title(Component.translatable("creativetab.lunarismod.noctrium_items"))
+                    .title(Component.translatable("creativetab.lunarismod.lunaris_items"))
                     .displayItems((pParameters, pOutput) -> {
                         pOutput.accept(ModItems.NOCTRIUMGEM.get());
                         pOutput.accept(ModItems.RAW_NOCTRIUM_GEM.get());
+                        pOutput.accept(ModItems.MOONSTONE.get());
+                        pOutput.accept(ModItems.LUNAR_HEROBRINE_GEM.get());
 
                         pOutput.accept(ModItems.NOCTRIUM_BONE.get());
+                        pOutput.accept(ModItems.VOID_PULSE.get());
+
+                        pOutput.accept(ModItems.SOUL_TOME.get());
 
                         pOutput.accept(ModItems.MOON_FRUIT_STEW.get());
+                        pOutput.accept(ModItems.MOONPPLE.get());
 
                         pOutput.accept(ModItems.NOCTRIUM_SWORD.get());
                         pOutput.accept(ModItems.NOCTRIUM_PICKAXE.get());
@@ -31,6 +37,9 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.NOCTRIUM_AXE.get());
                         pOutput.accept(ModItems.NOCTRIUM_HOE.get());
 
+                        pOutput.accept(ModItems.LUNAR_HEROBRINE_SWORD.get());
+
+                        pOutput.accept(ModItems.LUNAR_EDGE.get());
                         pOutput.accept(ModItems.NOCTRIUM_HAMMER.get());
                         pOutput.accept(ModItems.NOCTRIUM_TOMAHAWK.get());
 
@@ -39,23 +48,43 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.NOCTRIUM_LEGGINGS.get());
                         pOutput.accept(ModItems.NOCTRIUM_BOOTS.get());
 
+                        pOutput.accept(ModItems.MOON_HELMET.get());
+                        pOutput.accept(ModItems.MOON_CHESTPLATE.get());
+                        pOutput.accept(ModItems.MOON_LEGGINGS.get());
+                        pOutput.accept(ModItems.MOON_BOOTS.get());
+
                         pOutput.accept(ModItems.LUNARWOLF_SPAWN_EGG.get());
                         pOutput.accept(ModItems.VOIDHOWLER_SPAWN_EGG.get());
-
-
+                        pOutput.accept(ModItems.LUNARSENTINEL_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.LUNAR_CREEPER_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.VOID_PHANTOM_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.VOID_EYE_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.LUNAR_ENDERMAN_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.VELOMIR_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.LUNAR_ZOMBIE_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.LUNAR_ZOMBIE_KING_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.LUNAR_HEROBRINE_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.LUNAREON_SPAWN_EGG.get());
 
 
                     }).build());
 
-  public static final RegistryObject<CreativeModeTab> NOCTRIUM_BLOCKS_TAB = CREATIVE_MODE_TABS.register("noctrium_blocks_tab",
+  public static final RegistryObject<CreativeModeTab> LUNARIS_BLOCKS_TAB = CREATIVE_MODE_TABS.register("lunaris_blocks_tab",
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModBlocks.NOCTRIUM_BLOCK.get()))
-                    .withTabsBefore(NOCTRIUM_ITEMS_TAB.getId())
-                    .title(Component.translatable("creativetab.lunarismod.noctrium_blocks"))
+                    .withTabsBefore(LUNARIS_ITEMS_TAB.getId())
+                    .title(Component.translatable("creativetab.lunarismod.lunaris_blocks"))
                     .displayItems((pParameters, pOutput) -> {
                        pOutput.accept(ModBlocks.NOCTRIUM_BLOCK.get());
                        pOutput.accept(ModBlocks.RAW_NOCTRIUM_BLOCK.get());
+                       pOutput.accept(ModBlocks.MOONSTONE_BLOCK.get());
                        pOutput.accept(ModBlocks.NOCTRIUM_ORE.get());
                        pOutput.accept(ModBlocks.NOCTRIUM_DEEPSLATE_ORE.get());
+
+                       pOutput.accept(ModBlocks.HUSK_STONE_BLOCK.get());
+
+                       pOutput.accept(ModBlocks.LUNAR_GRASS_BLOCK.get());
+                       pOutput.accept(ModBlocks.LUNAR_DIRT_BLOCK.get());
+                       pOutput.accept(ModBlocks.LUNAR_STONE_BLOCK.get());
 
                         pOutput.accept(ModBlocks.NOCTRIUM_STAIRS.get());
                         pOutput.accept(ModBlocks.NOCTRIUM_SLAB.get());

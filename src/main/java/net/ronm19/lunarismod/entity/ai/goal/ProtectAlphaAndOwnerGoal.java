@@ -11,66 +11,56 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class ProtectAlphaAndOwnerGoal extends Goal {
-    private final LunarWolfEntity follower;
+    private final LunarWolfEntity wolf;
     private LivingEntity defendTarget;
 
-    public ProtectAlphaAndOwnerGoal(LunarWolfEntity follower) {
-        this.follower = follower;
-        this.setFlags(EnumSet.of(Goal.Flag.TARGET));
+    public ProtectAlphaAndOwnerGoal(LunarWolfEntity wolf) {
+        this.wolf = wolf;
+        this.setFlags(EnumSet.of(Flag.TARGET));
     }
 
     @Override
     public boolean canUse() {
-        // Leaders protect themselves by default, followers protect alpha and owner
-        if (follower.getPackRole() == null || follower.getPackRole().isLeader()) {
-            return false; // Leaders don’t protect others, just themselves
-        }
+        if (wolf.getPackRole() == null || wolf.getPackRole().isLeader()) return false;
 
-        // Find nearby VoidHowler alpha
-        LivingEntity alpha = findAlpha();
-        LivingEntity owner = follower.getOwner();
-
-        if (alpha == null && owner == null) {
-            return false;
-        }
-
-        // Prioritize defending alpha, else owner
+        LivingEntity alpha = locateAlpha();
+        LivingEntity owner = wolf.getOwner();
         LivingEntity defendEntity = alpha != null ? alpha : owner;
 
-        List<LivingEntity> threats = follower.level().getEntitiesOfClass(
+        if (defendEntity == null) return false;
+
+        List<LivingEntity> threats = wolf.level().getEntitiesOfClass(
                 LivingEntity.class,
                 defendEntity.getBoundingBox().inflate(40.0D),
-                e -> (e instanceof Monster || e instanceof Player) && e.isAlive() && e.distanceTo(defendEntity) < 40.0D
+                e -> (e instanceof Monster || e instanceof Player) &&
+                        e.isAlive() && e != defendEntity && e.distanceTo(defendEntity) < 40.0D
         );
 
-        if (threats.isEmpty()) {
-            return false;
-        }
+        if (threats.isEmpty()) return false;
 
         defendTarget = threats.stream()
                 .min((a, b) -> Double.compare(a.distanceTo(defendEntity), b.distanceTo(defendEntity)))
                 .orElse(null);
 
-        return defendTarget != null && defendTarget != follower.getTarget();
+        return defendTarget != null && defendTarget != wolf.getTarget();
     }
 
     @Override
     public void start() {
-        follower.setTarget(defendTarget);
+        wolf.setTarget(defendTarget);
     }
 
     @Override
     public void stop() {
-        follower.setTarget(null);
+        wolf.setTarget(null);
         defendTarget = null;
     }
 
-    private LivingEntity findAlpha() {
-        return follower.level().getEntitiesOfClass(VoidHowlerEntity.class,
-                        follower.getBoundingBox().inflate(15.0D),
-                        e -> e.isLeader() && e.isAlive())
-                .stream()
-                .findFirst()
-                .orElse(null);
+    private LivingEntity locateAlpha() {
+        return wolf.level().getEntitiesOfClass(
+                VoidHowlerEntity.class,
+                wolf.getBoundingBox().inflate(15.0D),
+                leader -> leader.isLeader() && leader.isAlive()
+        ).stream().findFirst().orElse(null);
     }
 }

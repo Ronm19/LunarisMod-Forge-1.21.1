@@ -1,5 +1,7 @@
 package net.ronm19.lunarismod.event;
 
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -9,6 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.ronm19.lunarismod.client.LunarisSkyRenderer;
+import org.lwjgl.glfw.GLFW;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -29,5 +32,6 @@ public class ModClientEvents {
                 e.printStackTrace();
             }
         });
+
     }
 }

@@ -1,12 +1,19 @@
 package net.ronm19.lunarismod.datagen;
 
+import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.GrassBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.ronm19.lunarismod.LunarisMod;
@@ -25,6 +32,13 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.NOCTRIUM_ORE);
         blockWithItem(ModBlocks.NOCTRIUM_DEEPSLATE_ORE);
 
+        blockWithItem(ModBlocks.LUNAR_DIRT_BLOCK);
+        blockWithItem(ModBlocks.LUNAR_STONE_BLOCK);
+
+        blockWithItem(ModBlocks.MOONSTONE_BLOCK);
+
+        blockWithItem(ModBlocks.HUSK_STONE_BLOCK);
+
         stairsBlock(ModBlocks.NOCTRIUM_STAIRS.get(), blockTexture(ModBlocks.NOCTRIUM_BLOCK.get()));
         slabBlock(ModBlocks.NOCTRIUM_SLAB.get(), blockTexture(ModBlocks.NOCTRIUM_BLOCK.get()), blockTexture(ModBlocks.NOCTRIUM_BLOCK.get()));
 
@@ -37,6 +51,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         doorBlockWithRenderType(ModBlocks.NOCTRIUM_DOOR.get(), modLoc("block/noctrium_door_bottom"), modLoc("block/noctrium_door_top"), "cutout");
         trapdoorBlockWithRenderType(ModBlocks.NOCTRIUM_TRAPDOOR.get(), modLoc("block/noctrium_trapdoor"), true, "cutout");
+
 
         blockItem(ModBlocks.NOCTRIUM_STAIRS);
         blockItem(ModBlocks.NOCTRIUM_SLAB);
@@ -58,7 +73,16 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         leavesBlock(ModBlocks.NOCTRIUM_LEAVES);
         saplingBlock(ModBlocks.NOCTRIUM_SAPLING);
+
+        simpleBlockWithItem(ModBlocks.LUNAR_GRASS_BLOCK.get(),
+                models().cubeBottomTop("lunar_grass_block",
+                        modLoc("block/lunar_grass_block_side"),
+                        modLoc("block/lunar_grass_block_bottom"),
+                        modLoc("block/lunar_grass_block_top")));
+
+
     }
+
 
     private void saplingBlock(RegistryObject<Block> blockRegistryObject) {
         simpleBlock(blockRegistryObject.get(),
@@ -84,4 +108,24 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlockItem(blockRegistryObject.get(), new ModelFile.UncheckedModelFile("lunarismod:block/" +
                 ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath() + appendix));
     }
+
+    public void horizontalBlockWithTemplate(Block block, String texturePath) {
+        // Use your own template, not Minecraft's nonexistent one
+        ResourceLocation modelTemplate = modLoc("block/template_horizontal");
+        ResourceLocation texture = modLoc("block/" + texturePath);
+        String name = BuiltInRegistries.BLOCK.getKey(block).getPath();
+
+        getVariantBuilder(block).forAllStates(state -> {
+            Direction direction = state.getValue(HorizontalDirectionalBlock.FACING);
+            int rotationY = (int) direction.toYRot();
+
+            return ConfiguredModel.builder()
+                    .modelFile(models()
+                            .withExistingParent(name, modelTemplate.toString())
+                            .texture("all", texture.toString()))
+                    .rotationY(rotationY)
+                    .build();
+        });
+    }
+
 }

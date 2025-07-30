@@ -1,15 +1,21 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "lunarismod:noctrium_gem"
-    },
-    {
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
       "item": "minecraft:bone"
+    },
+    "N": {
+      "item": "lunarismod:noctriumgem"
     }
+  },
+  "pattern": [
+    " N ",
+    " B ",
+    "   "
   ],
   "result": {
-    "item": "lunarismod:noctrium_bone",
-    "count": 1
+    "count": 1,
+    "id": "lunarismod:noctrium_bone"
   }
 }

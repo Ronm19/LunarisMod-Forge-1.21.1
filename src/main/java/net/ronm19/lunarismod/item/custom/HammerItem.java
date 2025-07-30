@@ -2,188 +2,136 @@ package net.ronm19.lunarismod.item.custom;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.ronm19.lunarismod.sound.ModSounds;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HammerItem extends DiggerItem {
-    public HammerItem(Tier pTier, Properties pProperties) {
-        super(pTier, BlockTags.MINEABLE_WITH_PICKAXE, pProperties);
+
+    public HammerItem(Tier tier, Properties properties) {
+        super(tier, BlockTags.MINEABLE_WITH_PICKAXE, properties);
     }
 
-    // 🔊 On hit
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (!attacker.level().isClientSide()) {
-            attacker.level().playSound(
-                    null,
-                    attacker.getX(), attacker.getY(), attacker.getZ(),
-                    ModSounds.NOCTRIUM_HAMMER_SOUNDS.getHitSound(),
-                    SoundSource.PLAYERS,
-                    1.0f,
-                    1.0f
-            );
-
-            // YEET logic
-            double dx = target.getX() - attacker.getX();
-            double dz = target.getZ() - attacker.getZ();
-            double magnitude = Math.sqrt(dx * dx + dz * dz);
-
-            if (magnitude != 0) {
-                target.setDeltaMovement((dx / magnitude) * 12.0D, 2.0D, (dz / magnitude) * 12.0D);
-                target.hasImpulse = true;
-                target.hurtMarked = true;
-            }
-
-            // AoE knockback
-            double radius = 5.5D;
-            List<LivingEntity> entities = attacker.level().getEntitiesOfClass(LivingEntity.class,
-                    target.getBoundingBox().inflate(radius));
-            for (LivingEntity entity : entities) {
-                if (entity != target && entity != attacker) {
-                    double ex = entity.getX() - attacker.getX();
-                    double ez = entity.getZ() - attacker.getZ();
-                    double dist = Math.sqrt(ex * ex + ez * ez);
-                    if (dist != 0) {
-                        entity.setDeltaMovement((ex / dist) * 8.0D, 1.5D, (ez / dist) * 8.0D);
-                        entity.hasImpulse = true;
-                        entity.hurtMarked = true;
-                    }
-                }
-            }
-
-            // Stun effect
-            float maxHealth = target.getMaxHealth();
-            double resistance = 0;
-            if (target.getAttribute(Attributes.KNOCKBACK_RESISTANCE) != null) {
-                resistance = target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();
-            }
-
-            int baseDuration = 40;
-            int scaledDuration = baseDuration + (int) (maxHealth * 2) + (int) (resistance * 60);
-
-            target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, scaledDuration, 4));
-            target.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, scaledDuration, 4));
-            target.addEffect(new MobEffectInstance(MobEffects.GLOWING, scaledDuration, 0));
-
-
-
-            // 🔊 If about to break, play break sound
-            if (stack.getDamageValue() >= stack.getMaxDamage() - 1) {
-                attacker.level().playSound(
-                        null,
-                        attacker.getX(), attacker.getY(), attacker.getZ(),
-                        ModSounds.NOCTRIUM_HAMMER_SOUNDS.getBreakSound(),
-                        SoundSource.PLAYERS,
-                        1.0f,
-                        1.0f
-                );
-            }
+        if (!target.level().isClientSide()) {
+            applyStunAndKnockback(target, attacker);
+            applyAoEKnockback(target, attacker);
         }
 
-        return super.hurtEnemy(stack, target, attacker);
-    }
-
-    // 🔊 On swing
-    @Override
-    public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
-        entity.level().playSound(
-                null,
-                entity.getX(), entity.getY(), entity.getZ(),
-                ModSounds.NOCTRIUM_HAMMER_WHOOSH.get(),
-                SoundSource.PLAYERS,
-                1.0f,
-                1.0f
-        );
-        return super.onEntitySwing(stack, entity);
-    }
-
-    // 🔊 On right-click (charge)
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        level.playSound(
-                null,
-                player.getX(), player.getY(), player.getZ(),
-                ModSounds.NOCTRIUM_HAMMER_CHARGE.get(),
-                SoundSource.PLAYERS,
-                1.0f,
-                1.0f
-        );
-        return super.use(level, player, hand);
-    }
-
-    // 🔊 On block mined
-    @Override
-    public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miner) {
-        if (!level.isClientSide()) {
-            level.playSound(
-                    null,
-                    pos.getX(), pos.getY(), pos.getZ(),
-                    ModSounds.NOCTRIUM_HAMMER_FALL.get(),
-                    SoundSource.BLOCKS,
-                    1.0f,
-                    1.0f
-            );
+        if (attacker instanceof Player player) {
+            stack.hurtAndBreak(1, player, null);
         }
-        return super.mineBlock(stack, level, state, pos, miner);
+
+        return true;
     }
 
-    // AoE mining helper
-    public static List<BlockPos> getBlocksToBeDestroyed(int range, BlockPos initalBlockPos, ServerPlayer player) {
+    private void applyStunAndKnockback(LivingEntity target, LivingEntity attacker) {
+        float maxHealth = target.getMaxHealth();
+        double resistance = 0.0;
+        if (target.getAttribute(Attributes.KNOCKBACK_RESISTANCE) != null) {
+            resistance = target.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();
+        }
+
+        int duration = 40 + (int) (maxHealth * 2) + (int) (resistance * 60);
+
+        target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, duration, 4));
+        target.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, duration, 4));
+        target.addEffect(new MobEffectInstance(MobEffects.GLOWING, duration, 0));
+
+        double dx = target.getX() - attacker.getX();
+        double dz = target.getZ() - attacker.getZ();
+        double scale = 15.0;
+
+        double length = Math.sqrt(dx * dx + dz * dz);
+        if (length != 0) {
+            dx /= length;
+            dz /= length;
+        }
+
+        target.setDeltaMovement(dx * scale, 6.0, dz * scale);
+        target.hurtMarked = true;
+
+        ServerLevel serverLevel = (ServerLevel) target.level();
+        serverLevel.sendParticles(ParticleTypes.EXPLOSION, target.getX(), target.getY() + 1.0, target.getZ(), 20, 0.5, 1, 0.5, 0.1);
+        serverLevel.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 2.0F, 0.6F + serverLevel.random.nextFloat() * 0.2F);
+    }
+
+    private void applyAoEKnockback(LivingEntity centerTarget, LivingEntity attacker) {
+        double aoeRadius = 8.0;
+        ServerLevel level = (ServerLevel) centerTarget.level();
+
+        List<LivingEntity> nearbyEntities = level.getEntitiesOfClass(
+                LivingEntity.class,
+                centerTarget.getBoundingBox().inflate(aoeRadius),
+                e -> e.isAlive() && e != centerTarget && e != attacker
+        );
+
+        for (LivingEntity other : nearbyEntities) {
+            double dx = other.getX() - attacker.getX();
+            double dz = other.getZ() - attacker.getZ();
+            double distanceSq = dx * dx + dz * dz;
+
+            if (distanceSq == 0) continue;
+
+            double length = Math.sqrt(distanceSq);
+            dx /= length;
+            dz /= length;
+
+            double aoeScale = 8.0;
+            other.setDeltaMovement(dx * aoeScale, 2.5, dz * aoeScale);
+            other.hurtMarked = true;
+
+            other.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 1));
+        }
+    }
+
+    public static List<BlockPos> getBlocksToBeDestroyed(int range, BlockPos origin, ServerPlayer player) {
         List<BlockPos> positions = new ArrayList<>();
 
-        BlockHitResult traceResult = player.level().clip(new ClipContext(
+        BlockHitResult trace = player.level().clip(new ClipContext(
                 player.getEyePosition(1f),
                 player.getEyePosition(1f).add(player.getViewVector(1f).scale(6f)),
-                ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+                ClipContext.Block.COLLIDER,
+                ClipContext.Fluid.NONE,
+                player
+        ));
 
-        if (traceResult.getType() == HitResult.Type.MISS) {
-            return positions;
-        }
+        if (trace.getType() == HitResult.Type.MISS) return positions;
 
-        Direction direction = traceResult.getDirection();
-        if (direction == Direction.DOWN || direction == Direction.UP) {
+        Direction face = trace.getDirection();
+
+        if (face == Direction.UP || face == Direction.DOWN) {
             for (int x = -range; x <= range; x++) {
-                for (int y = -range; y <= range; y++) {
-                    positions.add(new BlockPos(
-                            initalBlockPos.getX() + x,
-                            initalBlockPos.getY(),
-                            initalBlockPos.getZ() + y));
+                for (int z = -range; z <= range; z++) {
+                    positions.add(origin.offset(x, 0, z));
                 }
             }
-        } else if (direction == Direction.NORTH || direction == Direction.SOUTH) {
+        } else if (face == Direction.NORTH || face == Direction.SOUTH) {
             for (int x = -range; x <= range; x++) {
                 for (int y = -range; y <= range; y++) {
-                    positions.add(new BlockPos(
-                            initalBlockPos.getX() + x,
-                            initalBlockPos.getY() + y,
-                            initalBlockPos.getZ()));
+                    positions.add(origin.offset(x, y, 0));
                 }
             }
-        } else if (direction == Direction.EAST || direction == Direction.WEST) {
-            for (int x = -range; x <= range; x++) {
+        } else if (face == Direction.EAST || face == Direction.WEST) {
+            for (int z = -range; z <= range; z++) {
                 for (int y = -range; y <= range; y++) {
-                    positions.add(new BlockPos(
-                            initalBlockPos.getX(),
-                            initalBlockPos.getY() + y,
-                            initalBlockPos.getZ() + x));
+                    positions.add(origin.offset(0, y, z));
                 }
             }
         }

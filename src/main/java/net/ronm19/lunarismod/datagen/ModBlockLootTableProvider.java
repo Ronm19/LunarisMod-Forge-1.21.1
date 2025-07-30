@@ -15,6 +15,7 @@ import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 import net.ronm19.lunarismod.block.ModBlocks;
 import net.ronm19.lunarismod.item.ModItems;
@@ -30,11 +31,13 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     protected void generate() {
         dropSelf(ModBlocks.NOCTRIUM_BLOCK.get());
         dropSelf(ModBlocks.RAW_NOCTRIUM_BLOCK.get());
+        dropSelf(ModBlocks.HUSK_STONE_BLOCK.get());
 
         this.add(ModBlocks.NOCTRIUM_ORE.get(),
                 block -> createOreDrop(ModBlocks.NOCTRIUM_ORE.get(), ModItems.RAW_NOCTRIUM_GEM.get()));
         this.add(ModBlocks.NOCTRIUM_DEEPSLATE_ORE.get(),
                 block -> createMultipleOreDrops(ModBlocks.NOCTRIUM_DEEPSLATE_ORE.get(), ModItems.RAW_NOCTRIUM_GEM.get(), 2, 6));
+
 
         dropSelf(ModBlocks.NOCTRIUM_STAIRS.get());
         this.add(ModBlocks.NOCTRIUM_SLAB.get(),
@@ -46,6 +49,13 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.NOCTRIUM_FENCE_GATE.get());
         dropSelf(ModBlocks.NOCTRIUM_WALL.get());
         dropSelf(ModBlocks.NOCTRIUM_TRAPDOOR.get());
+
+        dropSelf(ModBlocks.LUNAR_GRASS_BLOCK.get());
+        dropSelf(ModBlocks.LUNAR_DIRT_BLOCK.get());
+        dropSelf(ModBlocks.LUNAR_STONE_BLOCK.get());
+
+        dropSelf(ModBlocks.MOONSTONE_BLOCK.get());
+
 
         this.add(ModBlocks.NOCTRIUM_DOOR.get(),
                 block -> createDoorTable(ModBlocks.NOCTRIUM_DOOR.get()));

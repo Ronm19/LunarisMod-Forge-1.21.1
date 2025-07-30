@@ -1,9 +1,12 @@
 package net.ronm19.lunarismod.entity.custom;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.ronm19.lunarismod.entity.ai.PackRole;
 import net.minecraft.server.level.ServerLevel;
@@ -26,10 +29,8 @@ import net.minecraft.world.level.Level;
 import net.ronm19.lunarismod.entity.ModEntities;
 import net.ronm19.lunarismod.entity.ai.goal.*;
 import net.ronm19.lunarismod.item.ModItems;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import static net.ronm19.lunarismod.entity.custom.VoidHowlerEntity.PackCommand.BUFF;
-import static net.ronm19.lunarismod.entity.custom.VoidHowlerEntity.PackCommand.RALLY;
 
 public class LunarWolfEntity extends TamableAnimal {
 
@@ -69,51 +70,57 @@ public class LunarWolfEntity extends TamableAnimal {
     // -------------------
     @Override
     protected void registerGoals() {
-        // --- Movement & retreat survival ---
+        // ====== goalSelector ======
+
+// --- Movement & survival ---
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new PanicAttackGoal(this, 1.5f));
         this.goalSelector.addGoal(2, new PackRetreatGoal(this));
+        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 
-        // --- Combat & pack synergy ---
-        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.3D, true));
-        this.targetSelector.addGoal(4, new HurtByTargetGoal(this).setAlertOthers());
+// --- Combat & pack synergy ---
+        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.3D, true));
         this.goalSelector.addGoal(5, new PatrolWithMemoryGoal(this));
-        this.targetSelector.addGoal(6, new OwnerHurtByTargetGoal(this));
-        this.targetSelector.addGoal(7, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(this, Monster.class, true));
-        this.targetSelector.addGoal(9, new ProtectAlphaAndOwnerGoal(this));
-        this.goalSelector.addGoal(10, new DynamicSwitchRoleGoal(this));
-        this.targetSelector.addGoal(11, new PackAttackGoal(this));
-        this.targetSelector.addGoal(12, new PackFlankGoal(this, 2.0));
-        this.targetSelector.addGoal(13, new SmartTargetGoal(this));
+        this.goalSelector.addGoal(6, new DynamicSwitchRoleGoal(this));
+
+// --- Buffs & phases ---
+        this.goalSelector.addGoal(7, new MoonPhaseBuffGoal(this));
+
+// --- Following & loyalty ---
+        this.goalSelector.addGoal(8, new FollowOwnerGoal(this, 1.1D, 8.0F, 2.0F));
+        this.goalSelector.addGoal(9, new FollowAlphaGoal(this, 1.4D, 4.0F, 24.0F));
+        this.goalSelector.addGoal(10, new SitWhenOrderedToGoal(this));
+
+// --- Basic AI & interactions ---
+        this.goalSelector.addGoal(11, new TemptGoal(this, 1.25D, Ingredient.of(Items.BONE), false));
+        this.goalSelector.addGoal(12, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(13, new FollowParentGoal(this, 1.25D));
+        this.goalSelector.addGoal(14, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(15, new RandomLookAroundGoal(this));
 
 
-        // --- Buffs based on lunar phases ---
-        this.goalSelector.addGoal(14, new MoonPhaseBuffGoal(this));
+// ====== targetSelector ======
 
-        // --- Following & loyalty ---
-        this.goalSelector.addGoal(15, new FollowOwnerGoal(this, 1.1D, 8.0F, 2.0F));
-        this.goalSelector.addGoal(16, new FollowAlphaGoal(this, 1.4D, 4.0F, 24.0F));
-        this.goalSelector.addGoal(17, new SitWhenOrderedToGoal(this));
-
-        // --- Basic AI and interactions ---
-        this.goalSelector.addGoal(18, new TemptGoal(this, 1.25D, Ingredient.of(Items.BONE), false));
-        this.goalSelector.addGoal(19, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(20, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.addGoal(21, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(22, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(23, new RandomLookAroundGoal(this));
+// --- Combat & pack synergy ---
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
+        this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Monster.class, true));
+        this.targetSelector.addGoal(5, new ProtectAlphaAndOwnerGoal(this));
+        this.targetSelector.addGoal(6, new PackAttackGoal(this));
+        this.targetSelector.addGoal(7, new PackFlankGoal(this, 2.0));
+        this.targetSelector.addGoal(8, new SmartTargetGoal(this));
     }
 
-    // -------------------
+        // -------------------
     // Attributes
     // -------------------
     public static AttributeSupplier.Builder createAttributes() {
         return Animal.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, 80.0D)
+                .add(Attributes.MAX_HEALTH, 90.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.35D)
-                .add(Attributes.FOLLOW_RANGE, 24.0D)
-                .add(Attributes.ATTACK_DAMAGE, 8.0D)
+                .add(Attributes.FOLLOW_RANGE, 29.0D)
+                .add(Attributes.ATTACK_DAMAGE, 9.0D)
                 .add(Attributes.ATTACK_KNOCKBACK, 1.5D);
     }
 
@@ -130,7 +137,7 @@ public class LunarWolfEntity extends TamableAnimal {
     // -------------------
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring( ServerLevel level, AgeableMob otherParent ) {
+    public AgeableMob getBreedOffspring( @NotNull ServerLevel level, @NotNull AgeableMob otherParent ) {
         return ModEntities.LUNARWOLF.get().create(level);
     }
 
@@ -308,6 +315,47 @@ public class LunarWolfEntity extends TamableAnimal {
 
     private Object mate;
     PathfinderMob wolf = (PathfinderMob) mate;
+
+    private long lastRitualTimestamp = -1;
+
+    public long getLastRitualTimestamp() {
+        return lastRitualTimestamp;
+    }
+
+    public void setLastRitualTimestamp(long timestamp) {
+        this.lastRitualTimestamp = timestamp;
+    }
+
+    public void saveAdditional( CompoundTag tag) {
+        super.save(tag);
+        tag.putLong("LastRitualTimestamp", lastRitualTimestamp);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.contains("LastRitualTimestamp")) {
+            lastRitualTimestamp = tag.getLong("LastRitualTimestamp");
+        }
+    }
+
+    public void promoteToAlpha() {
+        // Example logic: maybe increase health or add glowing
+        this.setCustomName(Component.literal("Alpha Lunar Wolf"));
+        this.setGlowingTag(true);
+        // You can also boost stats or play sound here
+    }
+
+    public void addPackMemoryBoost() {
+        // Apply temporary buffs or a status effect
+        this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 600, 1)); // 30 seconds of Strength II
+    }
+
+    public boolean isBondTo(Player player) {
+        // Check if this wolf is bonded to the given player
+        // Replace with your own bonding logic
+        return this.getOwner() != null && this.getOwner().getUUID().equals(player.getUUID());
+    }
 
 }
 

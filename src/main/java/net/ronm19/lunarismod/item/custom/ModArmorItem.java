@@ -2,6 +2,8 @@ package net.ronm19.lunarismod.item.custom;
 
 import com.google.common.collect.ImmutableMap;
 import net.ronm19.lunarismod.item.ModArmorMaterials;
+import net.ronm19.lunarismod.util.lighting.LightEmitter;
+import net.ronm19.lunarismod.util.lighting.LightLevel;
 import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -15,21 +17,35 @@ import java.util.List;
 import java.util.Map;
 
 public class ModArmorItem extends ArmorItem {
-    private static final Map<Holder<ArmorMaterial>, List<MobEffectInstance>> MATERIAL_TO_EFFECT_MAP =
-            (new ImmutableMap.Builder<Holder<ArmorMaterial>, List<MobEffectInstance>>())
-                    .put(ModArmorMaterials.NOCTRIUM_ARMOR_MATERIAL, List.of(
-                                    new MobEffectInstance(MobEffects.JUMP, 200, 2, false, false),
-                                    new MobEffectInstance(MobEffects.GLOWING, 200, 1, false, false),
-                                    new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 2, false, false),
-                                    new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 200, 2, false, false),
-                                    new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 2, false, false),
-                                    new MobEffectInstance(MobEffects.NIGHT_VISION, 600, 2, false, false),
-                                    new MobEffectInstance(MobEffects.WATER_BREATHING, 200, 2, false, false),
-                                    new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 2, false, false),
-                                    new MobEffectInstance(MobEffects.ABSORPTION, 200, 2, false, false)
 
-                            ))
+    private static final Map<Holder<ArmorMaterial>, List<MobEffectInstance>> MATERIAL_TO_EFFECT_MAP =
+            new ImmutableMap.Builder<Holder<ArmorMaterial>, List<MobEffectInstance>>()
+                    .put(ModArmorMaterials.NOCTRIUM_ARMOR_MATERIAL, List.of(
+                            new MobEffectInstance(MobEffects.JUMP, 200, 2, false, false),
+                            new MobEffectInstance(MobEffects.GLOWING, 200, 1, false, false),
+                            new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 2, false, false),
+                            new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 200, 2, false, false),
+                            new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 2, false, false),
+                            new MobEffectInstance(MobEffects.WATER_BREATHING, 200, 2, false, false),
+                            new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 2, false, false),
+                            new MobEffectInstance(MobEffects.ABSORPTION, 200, 2, false, false)
+                    ))
                     .build();
+
+
+    private static final Map<Holder<ArmorMaterial>, List<MobEffectInstance>> MOON_MATERIAL_TO_EFFECT_MAP =
+            new ImmutableMap.Builder<Holder<ArmorMaterial>, List<MobEffectInstance>>()
+                    .put(ModArmorMaterials.MOON_ARMOR_MATERIAL, List.of(
+                            new MobEffectInstance(MobEffects.ABSORPTION, 200, 1),
+                            new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 1),
+                            new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 2),
+                            new MobEffectInstance(MobEffects.REGENERATION, 200, 2),
+                            new MobEffectInstance(MobEffects.HEALTH_BOOST, 200, 1)
+                    ))
+                    .build();
+
+
+
 
     public ModArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
         super(material, type, properties);
@@ -37,55 +53,60 @@ public class ModArmorItem extends ArmorItem {
 
     @Override
     public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
-        if(!level.isClientSide() && hasFullSuitOfArmorOn(player)) {
-            evaluateArmorEffects(player);
+        if (level.isClientSide) return;
+
+        boolean hasFullArmor = hasFullSuitOfArmorOn(player);
+        if (!hasFullArmor) {
+            LightEmitter.removeTrackedLight(player);
+            return;
+        }
+
+        evaluateArmorEffects(player);
+
+        boolean isNight = level.getDayTime() % 24000 >= 13000;
+        boolean isMoving = player.getDeltaMovement().lengthSqr() > 0.001;
+
+        if (isNight && isMoving) {
+            LightEmitter.updateLight(player, LightLevel.MEDIUM);
+        } else {
+            LightEmitter.removeTrackedLight(player);
         }
     }
 
     private void evaluateArmorEffects(Player player) {
-        for(Map.Entry<Holder<ArmorMaterial>, List<MobEffectInstance>> entry : MATERIAL_TO_EFFECT_MAP.entrySet()) {
-            Holder<ArmorMaterial> mapArmorMaterial = entry.getKey();
-            List<MobEffectInstance> mapEffect = entry.getValue();
-
-            if(hasPlayerCorrectArmorOn(mapArmorMaterial, player)) {
-                addEffectToPlayer(player, mapEffect);
+        for (Map.Entry<Holder<ArmorMaterial>, List<MobEffectInstance>> entry : MATERIAL_TO_EFFECT_MAP.entrySet()) {
+            if (hasPlayerCorrectArmorOn(entry.getKey(), player)) {
+                applyEffects(player, entry.getValue());
             }
         }
     }
 
-    private void addEffectToPlayer(Player player, List<MobEffectInstance> mapEffect) {
-        boolean hasPlayerEffect = mapEffect.stream().allMatch(effect -> player.hasEffect(effect.getEffect()));
-
-        if(!hasPlayerEffect) {
-            for (MobEffectInstance effect : mapEffect) {
-                player.addEffect(new MobEffectInstance(effect.getEffect(),
-                        effect.getDuration(), effect.getAmplifier(), effect.isAmbient(), effect.isVisible()));
+    private void applyEffects(Player player, List<MobEffectInstance> effects) {
+        for (MobEffectInstance effect : effects) {
+            if (!player.hasEffect(effect.getEffect())) {
+                player.addEffect(new MobEffectInstance(
+                        effect.getEffect(),
+                        effect.getDuration(),
+                        effect.getAmplifier(),
+                        effect.isAmbient(),
+                        effect.isVisible()
+                ));
             }
         }
     }
 
-    private boolean hasPlayerCorrectArmorOn(Holder<ArmorMaterial> mapArmorMaterial, Player player) {
-        for(ItemStack armorStack : player.getArmorSlots()) {
-            if(!(armorStack.getItem() instanceof ArmorItem)) {
-                return false;
-            }
+    private boolean hasPlayerCorrectArmorOn(Holder<ArmorMaterial> material, Player player) {
+        for (ItemStack stack : player.getArmorSlots()) {
+            if (!(stack.getItem() instanceof ArmorItem armor)) return false;
+            if (armor.getMaterial() != material) return false;
         }
-
-        ArmorItem boots = ((ArmorItem) player.getInventory().getArmor(0).getItem());
-        ArmorItem leggings = ((ArmorItem) player.getInventory().getArmor(1).getItem());
-        ArmorItem chestplate = ((ArmorItem) player.getInventory().getArmor(2).getItem());
-        ArmorItem helmet = ((ArmorItem) player.getInventory().getArmor(3).getItem());
-
-        return boots.getMaterial() == mapArmorMaterial && leggings.getMaterial() == mapArmorMaterial
-                && chestplate.getMaterial() == mapArmorMaterial && helmet.getMaterial() == mapArmorMaterial;
+        return true;
     }
 
     private boolean hasFullSuitOfArmorOn(Player player) {
-        ItemStack boots = player.getInventory().getArmor(0);
-        ItemStack leggings = player.getInventory().getArmor(1);
-        ItemStack chestplate = player.getInventory().getArmor(2);
-        ItemStack helmet = player.getInventory().getArmor(3);
-
-        return !boots.isEmpty() && !leggings.isEmpty() && !chestplate.isEmpty() && !helmet.isEmpty();
+        for (ItemStack armor : player.getArmorSlots()) {
+            if (armor.isEmpty()) return false;
+        }
+        return true;
     }
 }

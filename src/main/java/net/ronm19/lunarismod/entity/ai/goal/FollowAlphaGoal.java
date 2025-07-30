@@ -9,68 +9,69 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class FollowAlphaGoal extends Goal {
-    private final LunarWolfEntity follower;
-    private LivingEntity leader;
+    private final LunarWolfEntity wolf;
+    private LivingEntity alpha;
     private final double speed;
-    private int timeToRecalcPath;
-    private final float minDist; // Min distance to start following
-    private final float maxDist; // Max distance to stop following
+    private int recalcDelay;
+    private static final int RECALC_INTERVAL = 10;
 
-    public FollowAlphaGoal(LunarWolfEntity follower, double speed, float minDist, float maxDist) {
-        this.follower = follower;
+    private final float minDistanceSq;
+    private final float maxDistanceSq;
+
+    public FollowAlphaGoal(LunarWolfEntity wolf, double speed, float minDist, float maxDist) {
+        this.wolf = wolf;
         this.speed = speed;
-        this.minDist = minDist;
-        this.maxDist = maxDist;
+        this.minDistanceSq = minDist * minDist;
+        this.maxDistanceSq = maxDist * maxDist;
         this.setFlags(EnumSet.of(Flag.MOVE));
     }
 
     @Override
     public boolean canUse() {
-        if (follower.isLeader()) return false; // Leader should not follow anyone else
+        if (wolf.isLeader()) return false;
 
-        leader = findAlpha();
-        if (leader == null) return false;
+        alpha = locateAlpha();
+        if (alpha == null) return false;
 
-        double distSq = follower.distanceToSqr(leader);
-        return distSq >= (minDist * minDist) && distSq <= (maxDist * maxDist);
+        double distSq = wolf.distanceToSqr(alpha);
+        return distSq >= minDistanceSq && distSq <= maxDistanceSq;
     }
 
     @Override
     public boolean canContinueToUse() {
-        if (leader == null) return false;
-        if (!leader.isAlive()) return false;
-
-        double distSq = follower.distanceToSqr(leader);
-        return distSq > (minDist * minDist) && distSq < (maxDist * maxDist);
+        return alpha != null && alpha.isAlive() &&
+                wolf.distanceToSqr(alpha) > minDistanceSq &&
+                wolf.distanceToSqr(alpha) < maxDistanceSq;
     }
 
     @Override
     public void start() {
-        this.timeToRecalcPath = 0;
+        recalcDelay = 0;
     }
 
     @Override
     public void stop() {
-        leader = null;
-        follower.getNavigation().stop();
+        alpha = null;
+        wolf.getNavigation().stop();
     }
 
     @Override
     public void tick() {
-        if (--timeToRecalcPath <= 0) {
-            timeToRecalcPath = 10; // Adjust this delay as needed
+        if (--recalcDelay <= 0) {
+            recalcDelay = RECALC_INTERVAL;
 
-            if (leader != null) {
-                follower.getNavigation().moveTo(leader, speed);
+            if (alpha != null && wolf.getNavigation().isDone()) {
+                wolf.getNavigation().moveTo(alpha, speed);
             }
         }
     }
 
-    private LivingEntity findAlpha() {
-        List<VoidHowlerEntity> alphas = follower.level().getEntitiesOfClass(VoidHowlerEntity.class,
-                follower.getBoundingBox().inflate(maxDist),
-                e -> e.isLeader() && e.isAlive());
-
-        return alphas.isEmpty() ? null : alphas.get(0);
+    private LivingEntity locateAlpha() {
+        List<VoidHowlerEntity> leaders = wolf.level().getEntitiesOfClass(
+                VoidHowlerEntity.class,
+                wolf.getBoundingBox().inflate(Math.sqrt(maxDistanceSq)),
+                e -> e.isLeader() && e.isAlive()
+        );
+        return leaders.isEmpty() ? null : leaders.get(0);
     }
 }
