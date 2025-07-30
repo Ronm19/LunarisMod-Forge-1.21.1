@@ -106,7 +106,7 @@ public class VoidHowlerEntity extends TamableAnimal {
                 this.heal(4.0F);
                 return InteractionResult.SUCCESS;
             }
-        } else if (stack.is(Items.BONE)) {
+        } else if (stack.is(ModItems.NOCTRIUM_BONE.get())) {
             if (!player.getAbilities().instabuild) {
                 stack.shrink(1);
             }
