@@ -52,7 +52,7 @@ public class ModBiomeModifiers {
 
         context.register(SPAWN_LUNARWOLF, new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
                 HolderSet.direct(biomes.getOrThrow(Biomes.FOREST), biomes.getOrThrow(Biomes.DARK_FOREST), biomes.getOrThrow(Biomes.BIRCH_FOREST), biomes.getOrThrow(Biomes.OLD_GROWTH_BIRCH_FOREST), biomes.getOrThrow(Biomes.OLD_GROWTH_PINE_TAIGA), biomes.getOrThrow(Biomes.TAIGA), biomes.getOrThrow(Biomes.SNOWY_TAIGA), biomes.getOrThrow(Biomes.WINDSWEPT_FOREST), biomes.getOrThrow(Biomes.GROVE), biomes.getOrThrow(Biomes.PLAINS), biomes.getOrThrow(ModBiomes.VIRECLAVE)),
-                List.of(new MobSpawnSettings.SpawnerData(ModEntities.LUNARWOLF.get(), 25, 5, 7))));
+                List.of(new MobSpawnSettings.SpawnerData(ModEntities.LUNARWOLF.get(), 40, 10, 18))));
         context.register(SPAWN_VOIDHOWLER, new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
                 HolderSet.direct(biomes.getOrThrow(Biomes.FOREST), biomes.getOrThrow(Biomes.DARK_FOREST), biomes.getOrThrow(Biomes.BIRCH_FOREST), biomes.getOrThrow(Biomes.OLD_GROWTH_BIRCH_FOREST), biomes.getOrThrow(Biomes.OLD_GROWTH_PINE_TAIGA), biomes.getOrThrow(Biomes.TAIGA), biomes.getOrThrow(Biomes.SNOWY_TAIGA), biomes.getOrThrow(Biomes.WINDSWEPT_FOREST), biomes.getOrThrow(Biomes.GROVE), biomes.getOrThrow(Biomes.PLAINS),biomes.getOrThrow(ModBiomes.VIRECLAVE)),
                 List.of(new MobSpawnSettings.SpawnerData(ModEntities.VOIDHOWLER.get(), 10, 1, 2))));

@@ -15,8 +15,8 @@
   ],
   "spawners": {
     "type": "lunarismod:lunarwolf",
-    "maxCount": 7,
-    "minCount": 5,
-    "weight": 25
+    "maxCount": 18,
+    "minCount": 10,
+    "weight": 40
   }
 }

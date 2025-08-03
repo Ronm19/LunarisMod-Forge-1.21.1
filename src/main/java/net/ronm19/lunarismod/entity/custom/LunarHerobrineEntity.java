@@ -248,15 +248,6 @@ public class LunarHerobrineEntity extends Monster {
 
             if (inRange) {
                 stopAllMusic(player); // ensure background music is muted
-
-                if (!musicStarted) {
-                    playBossMusic(player);
-                    musicTimer = MUSIC_DURATION;
-                    musicStarted = true;
-                } else if (musicTimer <= 0) {
-                    playBossMusic(player);
-                    musicTimer = MUSIC_DURATION;
-                }
             } else {
                 stopAllMusic(player); // stops boss music
                 musicStarted = false; // allows it to restart if re-entering range
@@ -391,7 +382,11 @@ public class LunarHerobrineEntity extends Monster {
         }
     }
 
-    private void playBossMusic(ServerPlayer player) {
+
+    @Override
+    public void startSeenByPlayer(ServerPlayer player) {
+        super.startSeenByPlayer(player);
+        bossEvent.addPlayer(player);
         if (player != null && player.connection != null && ModSounds.LUNAR_HEROBRINE_BOSS_MUSIC.getHolder().isPresent()) {
             player.connection.send(new ClientboundSoundPacket(
                     ModSounds.LUNAR_HEROBRINE_BOSS_MUSIC.getHolder().get(),
@@ -400,15 +395,12 @@ public class LunarHerobrineEntity extends Monster {
     }
 
     @Override
-    public void startSeenByPlayer(ServerPlayer player) {
-        super.startSeenByPlayer(player);
-        bossEvent.addPlayer(player);
-    }
-
-    @Override
     public void stopSeenByPlayer(ServerPlayer player) {
         super.stopSeenByPlayer(player);
         bossEvent.removePlayer(player);
+        if (player != null && player.connection != null) {
+            player.connection.send(new ClientboundStopSoundPacket(null, SoundSource.MUSIC));
+        }
     }
 
     @Override

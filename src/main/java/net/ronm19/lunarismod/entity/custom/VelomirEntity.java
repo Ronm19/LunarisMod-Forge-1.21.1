@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -23,13 +24,16 @@ import net.ronm19.lunarismod.entity.ModEntities;
 import net.ronm19.lunarismod.item.ModItems;
 import org.jetbrains.annotations.Nullable;
 
-public class VelomirEntity extends AbstractHorse {
+public class VelomirEntity extends AbstractHorse implements OwnableEntity {
 
     public final AnimationState idleAnimationState = new AnimationState();
     private int idleAnimationTimeout = 0;
+    private float standAnimO;
 
     public VelomirEntity( EntityType<? extends AbstractHorse> pEntityType, Level pLevel ) {
         super(pEntityType, pLevel);
+
+
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -77,7 +81,18 @@ public class VelomirEntity extends AbstractHorse {
         if(this.level().isClientSide) {
             this.setupAnimationStates();
         }
-
+        if (this.isStanding()) {
+            this.standAnimO = this.standAnimO + (1.0F - this.standAnimO) * 0.4F + 0.05F;
+            if (this.standAnimO > 1.0F) {
+                this.standAnimO = 1.0F;
+            }
+        } else {
+            this.allowStandSliding = false;
+            this.standAnimO = this.standAnimO + ((0.8F * this.standAnimO * this.standAnimO * this.standAnimO - this.standAnimO) * 0.6F - 0.05F);
+            if (this.standAnimO < 0.0F) {
+                this.standAnimO = 0.0F;
+            }
+        }
     }
 
     //--------- Ride Able Methods --------- //
@@ -156,10 +171,16 @@ public class VelomirEntity extends AbstractHorse {
     }
 
     @Override
-    protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float partialTick) {
-        return super.getPassengerAttachmentPoint(entity, dimensions, partialTick)
-                .add(new Vec3(0.0, -0.18D, -0.0D)
-                        .yRot(-this.getYRot() * (float) (Math.PI / 180.0)));
+    protected Vec3 getPassengerAttachmentPoint(Entity pEntity, EntityDimensions pDimensions, float pPartialTick) {
+        return super.getPassengerAttachmentPoint(pEntity, pDimensions, pPartialTick)
+                .add(
+                        new Vec3(0.0, 0.15 * (double)this.standAnimO * (double)pPartialTick, 0.7 * (double)this.standAnimO * (double)pPartialTick)
+                                .yRot(-this.getYRot() * (float) (Math.PI / 180.0))
+                );
+    }
+
+    public float getStandAnim(float pPartialTick) {
+        return Mth.lerp(pPartialTick, this.standAnimO, this.standAnimO);
     }
 
     @Override
@@ -181,6 +202,7 @@ public class VelomirEntity extends AbstractHorse {
     protected void playStepSound( BlockPos pos, BlockState blockState) {
         this.playSound(SoundEvents.SOUL_SAND_STEP, 0.15F, 1.0F);
     }
+
 
 
     @Override
