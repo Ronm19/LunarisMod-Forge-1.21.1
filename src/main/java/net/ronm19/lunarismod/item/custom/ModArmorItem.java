@@ -43,13 +43,16 @@ public class ModArmorItem extends ArmorItem {
                     .build();
 
 
-    public ModArmorItem( Holder<ArmorMaterial> material, Type type, Properties properties ) {
+
+
+    public ModArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
         super(material, type, properties);
     }
 
     @Override
-    public void onInventoryTick( ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex ) {
+    public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
         if (level.isClientSide) return;
+        evaluateArmorEffects(player);
     }
 
     private void evaluateArmorEffects(Player player) {

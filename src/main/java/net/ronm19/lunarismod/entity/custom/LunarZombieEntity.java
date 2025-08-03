@@ -20,6 +20,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Zombie;
@@ -51,7 +52,6 @@ public class LunarZombieEntity extends Monster {
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.8));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(7, new MoonlightStaggerGoal(this));
         this.goalSelector.addGoal(7, new HomeToHuskstoneGoal(this));
         this.goalSelector.addGoal(8, new LunarPackSyncGoal(this));
 
@@ -68,7 +68,7 @@ public class LunarZombieEntity extends Monster {
                 .add(Attributes.MAX_HEALTH, 79f)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.9D)
                 .add(Attributes.ARMOR_TOUGHNESS, 0.3f)
-                .add(Attributes.MOVEMENT_SPEED, 0.20f)
+                .add(Attributes.MOVEMENT_SPEED, 0.4f)
                 .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE);
     }
 

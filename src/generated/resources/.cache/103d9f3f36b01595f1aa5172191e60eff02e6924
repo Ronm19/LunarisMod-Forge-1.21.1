@@ -1,10 +1,10 @@
-// 1.21.1	2025-07-31T03:11:49.9966452	Registries
+// 1.21.1	2025-08-04T02:28:02.6567601	Registries
 12f206d0a2a091608c5b06057b6a56201d181fc6 data/lunarismod/enchantment/lunar_grace.json
 ffbe2b731ba885169bf01bbe80b4f6b02c0b8a4f data/lunarismod/forge/biome_modifier/add_noctrium_ore.json
 213b2e19b43ad1b61be3fdcff5152f0651660489 data/lunarismod/forge/biome_modifier/add_noctrium_tree.json
 5cfd6cffb6727fd9c6d7ec7c73251492ee5ea2a9 data/lunarismod/forge/biome_modifier/spawn_lunareon.json
 8fcd9d981087a2216188ec9cbe8dab6d19ee125b data/lunarismod/forge/biome_modifier/spawn_lunarsentinel.json
-87e2db2e121fdeed4d0a2b31273c538b2b3fcbcb data/lunarismod/forge/biome_modifier/spawn_lunarwolf.json
+0335c1424c03fa452e5b04db7557fc7d129c00cf data/lunarismod/forge/biome_modifier/spawn_lunarwolf.json
 b1f323ee90b5765185726f8ba58a76b21ed19ad5 data/lunarismod/forge/biome_modifier/spawn_lunar_creeper.json
 b5d02080dbb12d07d5a969c0d90dec1f5328e39b data/lunarismod/forge/biome_modifier/spawn_lunar_enderman.json
 0daf92732a3e0796a1766b4e4554f87c5f86c091 data/lunarismod/forge/biome_modifier/spawn_lunar_zombie.json

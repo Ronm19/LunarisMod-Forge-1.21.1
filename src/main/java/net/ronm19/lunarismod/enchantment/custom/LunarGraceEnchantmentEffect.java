@@ -18,19 +18,19 @@ public record LunarGraceEnchantmentEffect() implements EnchantmentEntityEffect {
 
         if (isNight) {
             if (enchantmentLevel >= 1) {
-                EntityType.LIGHTNING_BOLT.spawn(level, entity.getOnPos(), MobSpawnType.TRIGGERED);
+                EntityType.WITHER_SKULL.spawn(level, entity.getOnPos(), MobSpawnType.TRIGGERED);
             }
             if (enchantmentLevel >= 2) {
-                EntityType.LIGHTNING_BOLT.spawn(level, entity.getOnPos(), MobSpawnType.TRIGGERED);
-                EntityType.LIGHTNING_BOLT.spawn(level, entity.getOnPos(), MobSpawnType.TRIGGERED);
+                EntityType.WITHER_SKULL.spawn(level, entity.getOnPos(), MobSpawnType.TRIGGERED);
+                EntityType.WITHER_SKULL.spawn(level, entity.getOnPos(), MobSpawnType.TRIGGERED);
             }
 
         } else {
             if (enchantmentLevel >= 1) {
-                entity.setRemainingFireTicks(120);
+                entity.setRemainingFireTicks(240);
             }
             if (enchantmentLevel == 2) {
-                entity.setRemainingFireTicks(240);
+                entity.setRemainingFireTicks(300);
             }
         }
     }
