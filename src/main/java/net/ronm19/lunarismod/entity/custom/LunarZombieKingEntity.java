@@ -61,6 +61,7 @@ public class LunarZombieKingEntity extends Monster {
         this.goalSelector.addGoal(3, new RandomStrollGoal(this, 0.6D));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
@@ -125,21 +126,6 @@ public class LunarZombieKingEntity extends Monster {
         if (!level.isClientSide) {
             this.spawnAtLocation(ModItems.LUNAR_HEROBRINE_GEM.get());
         }
-    }
-
-    // Boss bar player tracking (manually attached via other triggers)
-    public void handlePlayerTracking(ServerPlayer player, boolean seen) {
-        if (seen) {
-            bossEvent.addPlayer(player);
-        } else {
-            bossEvent.removePlayer(player);
-        }
-    }
-
-    @Override
-    public void setCustomName(@Nullable Component name) {
-        super.setCustomName(name);
-        bossEvent.setName(name);
     }
 
     @Override

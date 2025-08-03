@@ -158,7 +158,7 @@ public class VelomirEntity extends AbstractHorse {
     @Override
     protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float partialTick) {
         return super.getPassengerAttachmentPoint(entity, dimensions, partialTick)
-                .add(new Vec3(0.0, -0.18D, -0.15D)
+                .add(new Vec3(0.0, -0.18D, -0.0D)
                         .yRot(-this.getYRot() * (float) (Math.PI / 180.0)));
     }
 
@@ -179,7 +179,7 @@ public class VelomirEntity extends AbstractHorse {
 
     @Override
     protected void playStepSound( BlockPos pos, BlockState blockState) {
-        this.playSound(SoundEvents.HORSE_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.SOUL_SAND_STEP, 0.15F, 1.0F);
     }
 
 

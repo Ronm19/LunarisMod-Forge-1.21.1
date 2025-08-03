@@ -7,8 +7,8 @@
     }
   },
   "pattern": [
-    "NN",
-    "NN"
+    " N ",
+    "   "
   ],
   "result": {
     "count": 1,

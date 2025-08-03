@@ -30,7 +30,6 @@ public class ModBiomeModifiers {
     public static final ResourceKey<BiomeModifier> SPAWN_LUNAR_ENDERMAN = registerKey("spawn_lunar_enderman");
     public static final ResourceKey<BiomeModifier> SPAWN_VELOMIR = registerKey("spawn_velomir");
     public static final ResourceKey<BiomeModifier> SPAWN_LUNAR_ZOMBIE = registerKey("spawn_lunar_zombie");
-    public static final ResourceKey<BiomeModifier> SPAWN_LUNAR_HEROBRINE = registerKey("spawn_lunar_herobrine");
     public static final ResourceKey<BiomeModifier> SPAWN_LUNAR_ZOMBIE_KING = registerKey("spawn_lunar_zombie_king");
     public static final ResourceKey<BiomeModifier> SPAWN_LUNAREON = registerKey("spawn_lunareon");
 
@@ -67,9 +66,6 @@ public class ModBiomeModifiers {
         context.register(SPAWN_LUNAR_ZOMBIE, new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
                 HolderSet.direct(biomes.getOrThrow(Biomes.FOREST), biomes.getOrThrow(Biomes.DARK_FOREST), biomes.getOrThrow(Biomes.BIRCH_FOREST), biomes.getOrThrow(Biomes.OLD_GROWTH_BIRCH_FOREST), biomes.getOrThrow(Biomes.OLD_GROWTH_PINE_TAIGA), biomes.getOrThrow(Biomes.TAIGA), biomes.getOrThrow(Biomes.SNOWY_TAIGA), biomes.getOrThrow(Biomes.WINDSWEPT_FOREST), biomes.getOrThrow(Biomes.GROVE), biomes.getOrThrow(Biomes.PLAINS),biomes.getOrThrow(ModBiomes.VIRECLAVE)),
                 List.of(new MobSpawnSettings.SpawnerData(ModEntities.LUNAR_ZOMBIE.get(), 20, 4, 8))));
-        context.register(SPAWN_LUNAR_HEROBRINE, new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
-                HolderSet.direct(biomes.getOrThrow(ModBiomes.VIRECLAVE)),
-                List.of(new MobSpawnSettings.SpawnerData(ModEntities.LUNAR_HEROBRINE.get(), 2, 1, 2))));
         context.register(SPAWN_LUNAR_ZOMBIE_KING, new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
                 HolderSet.direct(biomes.getOrThrow(ModBiomes.VIRECLAVE)), List.of(new MobSpawnSettings.SpawnerData(ModEntities.LUNAR_ZOMBIE_KING.get(), 10, 1, 1))));
         context.register(SPAWN_LUNAREON, new ForgeBiomeModifiers.AddSpawnsBiomeModifier(

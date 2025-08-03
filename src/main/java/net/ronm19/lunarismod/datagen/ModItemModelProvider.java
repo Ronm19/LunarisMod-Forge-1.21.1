@@ -83,6 +83,12 @@ public class ModItemModelProvider extends ItemModelProvider {
         trimmedArmorItem(ModItems.MOON_LEGGINGS);
         trimmedArmorItem(ModItems.MOON_BOOTS);
 
+
+        trimmedArmorItem(ModItems.MOON_HELMET);
+        trimmedArmorItem(ModItems.MOON_CHESTPLATE);
+        trimmedArmorItem(ModItems.MOON_LEGGINGS);
+        trimmedArmorItem(ModItems.MOON_BOOTS);
+
         saplingItem(ModBlocks.NOCTRIUM_SAPLING);
 
         cubeBottomTopBlockItem(ModBlocks.LUNAR_GRASS_BLOCK);

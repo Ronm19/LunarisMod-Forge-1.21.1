@@ -2,8 +2,6 @@ package net.ronm19.lunarismod.item.custom;
 
 import com.google.common.collect.ImmutableMap;
 import net.ronm19.lunarismod.item.ModArmorMaterials;
-import net.ronm19.lunarismod.util.lighting.LightEmitter;
-import net.ronm19.lunarismod.util.lighting.LightLevel;
 import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -40,41 +38,28 @@ public class ModArmorItem extends ArmorItem {
                             new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 1),
                             new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 2),
                             new MobEffectInstance(MobEffects.REGENERATION, 200, 2),
-                            new MobEffectInstance(MobEffects.HEALTH_BOOST, 200, 1)
+                            new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 2)
                     ))
                     .build();
 
 
-
-
-    public ModArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
+    public ModArmorItem( Holder<ArmorMaterial> material, Type type, Properties properties ) {
         super(material, type, properties);
     }
 
     @Override
-    public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
+    public void onInventoryTick( ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex ) {
         if (level.isClientSide) return;
-
-        boolean hasFullArmor = hasFullSuitOfArmorOn(player);
-        if (!hasFullArmor) {
-            LightEmitter.removeTrackedLight(player);
-            return;
-        }
-
-        evaluateArmorEffects(player);
-
-        boolean isNight = level.getDayTime() % 24000 >= 13000;
-        boolean isMoving = player.getDeltaMovement().lengthSqr() > 0.001;
-
-        if (isNight && isMoving) {
-            LightEmitter.updateLight(player, LightLevel.MEDIUM);
-        } else {
-            LightEmitter.removeTrackedLight(player);
-        }
     }
 
     private void evaluateArmorEffects(Player player) {
         for (Map.Entry<Holder<ArmorMaterial>, List<MobEffectInstance>> entry : MATERIAL_TO_EFFECT_MAP.entrySet()) {
+            if (hasPlayerCorrectArmorOn(entry.getKey(), player)) {
+                applyEffects(player, entry.getValue());
+            }
+        }
+
+        for (Map.Entry<Holder<ArmorMaterial>, List<MobEffectInstance>> entry : MOON_MATERIAL_TO_EFFECT_MAP.entrySet()) {
             if (hasPlayerCorrectArmorOn(entry.getKey(), player)) {
                 applyEffects(player, entry.getValue());
             }

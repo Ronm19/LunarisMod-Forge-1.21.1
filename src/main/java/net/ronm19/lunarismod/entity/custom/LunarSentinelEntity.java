@@ -1,6 +1,7 @@
 package net.ronm19.lunarismod.entity.custom;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
@@ -57,9 +58,9 @@ public class LunarSentinelEntity extends Monster {
     /* ─────────────── Attributes ─────────────── */
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.ATTACK_DAMAGE,     18.0D)
+                .add(Attributes.ATTACK_DAMAGE,     8.0D)
                 .add(Attributes.ATTACK_KNOCKBACK,   0.9D)
-                .add(Attributes.MAX_HEALTH,        110.0D)
+                .add(Attributes.MAX_HEALTH,        80.0D)
                 .add(Attributes.MOVEMENT_SPEED,     0.5D)
                 .add(Attributes.FOLLOW_RANGE,      32.0D)
                 .add(Attributes.ARMOR,              9.0D)
@@ -104,6 +105,11 @@ public class LunarSentinelEntity extends Monster {
             float dropChance = 0.05F; // 5% drop chance
             if (this.random.nextFloat() < dropChance) {
                 this.spawnAtLocation(ModItems.LUNAR_EDGE.get());
+            }
+            if (this.level() instanceof ServerLevel serverLevel) {
+                for (LunarHerobrineEntity herobrine : serverLevel.getEntitiesOfClass(LunarHerobrineEntity.class, this.getBoundingBox().inflate(50))) {
+                    herobrine.onMinionKilled();
+                }
             }
         }
     }

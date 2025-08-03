@@ -1,0 +1,42 @@
+[03Aug2025 23:33:00.303] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forge_userdev_data, --assetIndex, 17, --assetsDir, C:\Users\Hassan Rifi\.gradle\caches\forge_gradle\assets, --gameDir, ., --mod, lunarismod, --all, --output, C:\Users\Hassan Rifi\Desktop\Stuff for Mods\Minecraft\Mods Projects (Intell)\LunarisMod-Forge-1.21.1\src\generated\resources, --existing, C:\Users\Hassan Rifi\Desktop\Stuff for Mods\Minecraft\Mods Projects (Intell)\LunarisMod-Forge-1.21.1\src\main\resources]
+[03Aug2025 23:33:00.310] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: JVM identified as Eclipse Adoptium OpenJDK 64-Bit Server VM 21.0.7+6-LTS
+[03Aug2025 23:33:00.311] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.2.4 starting: java version 21.0.7 by Eclipse Adoptium; OS Windows 11 arch amd64 version 10.0
+[03Aug2025 23:33:00.491] [main/INFO] [net.minecraftforge.fml.loading.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because launch target is forge_userdev_data
+[03Aug2025 23:33:00.718] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=jar:file:///C:/Users/Hassan%20Rifi/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.7/8ab114ac385e6dbdad5efafe28aba4df8120915f/mixin-0.8.7.jar!/ Service=ModLauncher Env=UNKNOWN
+[03Aug2025 23:33:02.954] [main/INFO] [net.minecraftforge.fml.loading.moddiscovery.JarInJarDependencyLocator/]: No dependencies to load found. Skipping!
+[03Aug2025 23:33:04.346] [main/INFO] [mixin/]: Compatibility level set to JAVA_17
+[03Aug2025 23:33:04.355] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forge_userdev_data' with arguments [--gameDir, ., --assetsDir, C:\Users\Hassan Rifi\.gradle\caches\forge_gradle\assets, --assetIndex, 17, --mod, lunarismod, --all, --output, C:\Users\Hassan Rifi\Desktop\Stuff for Mods\Minecraft\Mods Projects (Intell)\LunarisMod-Forge-1.21.1\src\generated\resources, --existing, C:\Users\Hassan Rifi\Desktop\Stuff for Mods\Minecraft\Mods Projects (Intell)\LunarisMod-Forge-1.21.1\src\main\resources]
+[03Aug2025 23:33:04.405] [main/WARN] [mixin/]: Reference map 'terrablender.refmap.json' for terrablender.mixins.json could not be read. If this is a development environment you can ignore this message
+[03Aug2025 23:33:04.409] [main/WARN] [mixin/]: Reference map 'terrablender.refmap.json' for terrablender_forge.mixins.json could not be read. If this is a development environment you can ignore this message
+[03Aug2025 23:33:04.523] [main/WARN] [mixin/]: Mixin environment was unable to detect the current side, sided mixins will not be applied
+[03Aug2025 23:33:04.524] [main/WARN] [mixin/]: Mixin environment was unable to detect the current side, sided mixins will not be applied
+[03Aug2025 23:33:15.898] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 52.1.1, for MC 1.21.1 with MCP 20240808.132146
+[03Aug2025 23:33:15.900] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v52.1.1 Initialized
+[03Aug2025 23:33:15.979] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Opening jdk.naming.dns/com.sun.jndi.dns to java.naming
+[03Aug2025 23:33:16.040] [modloading-worker-0/INFO] [terrablender/]: Registered region minecraft:overworld to index 0 for type OVERWORLD
+[03Aug2025 23:33:16.041] [modloading-worker-0/INFO] [terrablender/]: Registered region minecraft:nether to index 0 for type NETHER
+[03Aug2025 23:33:16.041] [modloading-worker-0/INFO] [terrablender/]: Registered region lunarismod:lunaris_overworld to index 1 for type OVERWORLD
+[03Aug2025 23:33:16.180] [modloading-worker-0/INFO] [mezz.jei.library.load.PluginCaller/]: Sending ConfigManager...
+[03Aug2025 23:33:16.202] [modloading-worker-0/INFO] [mezz.jei.library.load.PluginCaller/]: Sending ConfigManager took 16.04 milliseconds
+[03Aug2025 23:33:16.783] [main/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class net.minecraft.world.entity.monster.Creeper from class net.ronm19.lunarismod.entity.custom.LunarCreeperEntity
+[03Aug2025 23:33:16.785] [main/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class net.minecraft.world.entity.monster.Creeper from class net.ronm19.lunarismod.entity.custom.LunarCreeperEntity
+[03Aug2025 23:33:16.785] [main/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class net.minecraft.world.entity.monster.Creeper from class net.ronm19.lunarismod.entity.custom.LunarCreeperEntity
+[03Aug2025 23:33:16.833] [main/INFO] [net.minecraftforge.data.loading.DatagenModLoader/]: Initializing Data Gatherer for mods [lunarismod]
+[03Aug2025 23:33:16.960] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/Hassan%20Rifi/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.21.1-52.1.1_mapped_parchment_2024.11.17-1.21.1/forge-1.21.1-52.1.1_mapped_parchment_2024.11.17-1.21.1-recomp.jar%230!/assets/.mcassetsroot' uses unexpected schema
+[03Aug2025 23:33:16.962] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/Hassan%20Rifi/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.21.1-52.1.1_mapped_parchment_2024.11.17-1.21.1/forge-1.21.1-52.1.1_mapped_parchment_2024.11.17-1.21.1-recomp.jar%230!/data/.mcassetsroot' uses unexpected schema
+[03Aug2025 23:33:17.332] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Loot Tables
+[03Aug2025 23:33:17.972] [main/INFO] [net.minecraft.data.DataGenerator/]: Loot Tables finished after 638 ms
+[03Aug2025 23:33:17.972] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Recipes
+[03Aug2025 23:33:18.128] [main/INFO] [net.minecraft.data.DataGenerator/]: Recipes finished after 155 ms
+[03Aug2025 23:33:18.128] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Tags for minecraft:block mod id lunarismod
+[03Aug2025 23:33:18.159] [main/INFO] [net.minecraft.data.DataGenerator/]: Tags for minecraft:block mod id lunarismod finished after 30 ms
+[03Aug2025 23:33:18.159] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Tags for minecraft:item mod id lunarismod
+[03Aug2025 23:33:18.163] [main/INFO] [net.minecraft.data.DataGenerator/]: Tags for minecraft:item mod id lunarismod finished after 3 ms
+[03Aug2025 23:33:18.164] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Item Models: lunarismod
+[03Aug2025 23:33:18.389] [main/INFO] [net.minecraft.data.DataGenerator/]: Item Models: lunarismod finished after 224 ms
+[03Aug2025 23:33:18.389] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Block States: lunarismod
+[03Aug2025 23:33:18.746] [main/INFO] [net.minecraft.data.DataGenerator/]: Block States: lunarismod finished after 356 ms
+[03Aug2025 23:33:18.746] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Registries
+[03Aug2025 23:33:18.795] [main/INFO] [net.minecraft.data.DataGenerator/]: Registries finished after 47 ms
+[03Aug2025 23:33:18.795] [main/INFO] [net.minecraft.data.DataGenerator/]: All providers took: 1463 ms
+[03Aug2025 23:33:18.831] [main/INFO] [net.minecraft.data.HashCache/]: Caching: total files: 362, old count: 361, new count: 363, removed stale: 0, written: 3

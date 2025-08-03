@@ -15,6 +15,7 @@ public class ModSounds {
 
 
     public static final RegistryObject<SoundEvent> VOID_HOWLER_HOWL = registerSoundEvent("void_howler_howl");
+    public static final RegistryObject<SoundEvent> LUNAR_HEROBRINE_BOSS_MUSIC = registerSoundEvent("lunar_herobrine_boss_music");
 
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {
         return SOUND_EVENT.register(name, () ->  SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(LunarisMod.MOD_ID, name)));

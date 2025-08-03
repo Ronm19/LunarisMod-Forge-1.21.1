@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_noctriumgem": {
+    "has_noctrium_planks": {
       "conditions": {
         "items": [
           {
-            "items": "lunarismod:noctriumgem"
+            "items": "lunarismod:noctrium_planks"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_noctriumgem"
+      "has_noctrium_planks"
     ]
   ],
   "rewards": {
