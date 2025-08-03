@@ -122,11 +122,6 @@ public class VoidPhantomEntity extends Monster implements FlyingAnimal {
     public boolean hurt(DamageSource source, float amount) {
         Entity directEntity = source.getDirectEntity();
 
-        // Immune to fire and lightning
-        if (source.is(DamageTypeTags.IS_FIRE) || source.is(DamageTypes.LIGHTNING_BOLT)) {
-            return false;
-        }
-
         // Prevent damage from the player riding it
         if (directEntity != null && directEntity == this.getControllingPassenger()) {
             return false;
