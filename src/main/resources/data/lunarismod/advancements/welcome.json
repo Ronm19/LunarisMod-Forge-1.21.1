@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "lunarismod:noctrium_gem"
+    },
+    "title": {
+      "text": "Lunaris Mod"
+    },
+    "description": {
+      "text": "The moon whispers... your legend begins."
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "lunarismod:textures/item/lunar_codex.png"
+  },
+  "criteria": {
+    "joined_world": {
+      "trigger": "minecraft:tick"
+    }
+  },
+  "requirements": [
+    ["joined_world"]
+  ],
+  "rewards": {
+    "function": "lunarismod:give_lunar_codex"
+  }
+}

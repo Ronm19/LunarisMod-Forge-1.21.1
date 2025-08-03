@@ -40,7 +40,7 @@ public class ModArmorItem extends ArmorItem {
                             new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 1),
                             new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 2),
                             new MobEffectInstance(MobEffects.REGENERATION, 200, 2),
-                            new MobEffectInstance(MobEffects.HEALTH_BOOST, 200, 1)
+                            new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 2)
                     ))
                     .build();
 
@@ -75,6 +75,12 @@ public class ModArmorItem extends ArmorItem {
 
     private void evaluateArmorEffects(Player player) {
         for (Map.Entry<Holder<ArmorMaterial>, List<MobEffectInstance>> entry : MATERIAL_TO_EFFECT_MAP.entrySet()) {
+            if (hasPlayerCorrectArmorOn(entry.getKey(), player)) {
+                applyEffects(player, entry.getValue());
+            }
+        }
+
+        for (Map.Entry<Holder<ArmorMaterial>, List<MobEffectInstance>> entry : MOON_MATERIAL_TO_EFFECT_MAP.entrySet()) {
             if (hasPlayerCorrectArmorOn(entry.getKey(), player)) {
                 applyEffects(player, entry.getValue());
             }

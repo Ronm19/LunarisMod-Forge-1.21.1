@@ -8,7 +8,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -29,10 +28,15 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Fireball;
+import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.ronm19.lunarismod.entity.ModEntities;
 import net.ronm19.lunarismod.entity.ai.goal.FlyingWanderAroundGoal;
@@ -40,8 +44,6 @@ import net.ronm19.lunarismod.entity.ai.goal.VoidOrbAttackGoal;
 import net.ronm19.lunarismod.entity.ai.interfaces.RangedShooter;
 import net.ronm19.lunarismod.item.ModItems;
 import org.jetbrains.annotations.Nullable;
-
-import static net.minecraft.world.entity.monster.Monster.isDarkEnoughToSpawn;
 
 public class VoidEyeEntity extends TamableAnimal implements FlyingAnimal, RangedAttackMob, RangedShooter {
 
@@ -152,7 +154,7 @@ public class VoidEyeEntity extends TamableAnimal implements FlyingAnimal, Ranged
         }
     }
 
-    public static boolean canSpawn(EntityType<VoidPhantomEntity> type, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean canSpawn( EntityType<VoidPhantomEntity> type, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random ) {
         return level.getBlockState(pos.below()).isAir() || spawnType == MobSpawnType.SPAWNER; // basic airborne check
     }
 
@@ -176,7 +178,7 @@ public class VoidEyeEntity extends TamableAnimal implements FlyingAnimal, Ranged
     }
 
     @Override
-    public void setGlowing(boolean glowing) {
+    public void setGlowing( boolean glowing ) {
         this.glowing = glowing;
         super.setGlowingTag(glowing); // Optional if you want vanilla glow effect
     }
@@ -210,27 +212,63 @@ public class VoidEyeEntity extends TamableAnimal implements FlyingAnimal, Ranged
     public static boolean checkMonsterSpawnRules(
             EntityType<? extends Monster> pType, ServerLevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom ) {
         {
-    }
+        }
         return false;
     }
 
     @Override
     public void performRangedAttack( LivingEntity target, float distanceFactor ) {
-        this.target = target;
-        this.distanceFactor = distanceFactor;
         if (!this.level().isClientSide) {
             Vec3 direction = target.position().subtract(this.position()).normalize();
-            double velocity = 1.5;  // Adjust for sniper feel, increase for faster projectile
+            Vec3 motion = direction.scale(0.1); // Scaled velocity for small fireball
 
-            VoidOrbEntity orb = new VoidOrbEntity(this.level(), this);
-            orb.setBaseDamage(8.0); // Optional: higher damage for sniper feel
-            orb.setPos(this.getX(), this.getEyeY() - 0.1, this.getZ());
-            orb.setDeltaMovement(direction.scale(velocity));
+            SmallFireball fireball = new SmallFireball(this.level(), this, motion);
+            fireball.setPos(this.getX(), this.getEyeY() - 0.1, this.getZ());
 
-            this.level().addFreshEntity(orb);
+            this.level().addFreshEntity(fireball);
             this.level().playSound(null, this.blockPosition(), SoundEvents.BLAZE_SHOOT, SoundSource.HOSTILE, 1.0F, 1.0F);
         }
     }
+
+    @Override
+    public void onHit( HitResult result ) {
+
+        if (!this.level().isClientSide) {
+            if (result.getType() == HitResult.Type.ENTITY) {
+                EntityHitResult entityResult = (EntityHitResult) result;
+                Entity hitEntity = entityResult.getEntity();
+
+                // Ignore damage if hit entity is the owner
+                if (hitEntity == this.getOwner()) {
+                    this.discard(); // remove projectile without damage or effects
+                    return;
+                }
+            }
+
+            // Your area effect or damage logic here for other entities
+        }
+    }
+
+
+    @Override
+    public boolean hurt( DamageSource source, float amount ) {
+        // Ignore damage if the source is the owner
+        if (source.getEntity() == this.getOwner()) {
+            return false;
+        }
+        return super.hurt(source, amount);
+    }
+
+
+    @Override
+    public boolean causeFallDamage( float fallDistance, float damageMultiplier, DamageSource source ) {
+        return false;
+    }
+
+    @Override
+    protected void checkFallDamage( double y, boolean onGround, BlockState state, BlockPos pos ) {
+    }
+
 
     @Nullable
     public SpawnGroupData finalizeSpawn( ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason,
@@ -261,18 +299,26 @@ public class VoidEyeEntity extends TamableAnimal implements FlyingAnimal, Ranged
         return glowing;
     }
 
+
     @Override
-    public void shootAtTarget( LivingEntity target ) {
+    public void shootAtTarget(LivingEntity target) {
         if (!this.level().isClientSide) {
             Vec3 direction = target.position().subtract(this.position()).normalize();
-            double velocity = 9.5;  // Adjust velocity for sniper feel
+            double speed = 0.5D;
 
-            VoidOrbEntity orb = new VoidOrbEntity(this.level(), this);
-            orb.setBaseDamage(11.0);  // Optional: stronger damage for sniper effect
-            orb.setPos(this.getX(), this.getEyeY() - 0.1, this.getZ());
-            orb.setDeltaMovement(direction.scale(velocity));
+            Vec3 velocity = direction.scale(speed);
 
-            this.level().addFreshEntity(orb);
+            SmallFireball fireball = new SmallFireball(
+                    this.level(),
+                    this.getX(),
+                    this.getEyeY(),
+                    this.getZ(),
+                    velocity
+            );
+
+            fireball.setOwner(this); // Optional but recommended
+
+            this.level().addFreshEntity(fireball);
             this.level().playSound(null, this.blockPosition(), SoundEvents.BLAZE_SHOOT, SoundSource.HOSTILE, 1.0F, 1.0F);
         }
     }

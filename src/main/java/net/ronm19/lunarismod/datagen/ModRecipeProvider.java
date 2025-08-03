@@ -55,6 +55,15 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(Items.GLOW_BERRIES), has(Items.GLOW_BERRIES))
                 .save(pRecipeOutput);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, ModItems.MOONPPLE.get())
+                .pattern(" M ")
+                .pattern(" A ")
+                .pattern("   ")
+                .define('M', ModItems.MOONSTONE.get())
+                .define('A', Items.APPLE)
+                .unlockedBy(getHasName(ModItems.MOONSTONE.get()), has(ModItems.MOONSTONE.get()))
+                .save(pRecipeOutput);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.NOCTRIUM_SWORD.get())
                 .pattern(" N ")
                 .pattern(" N ")
@@ -71,6 +80,16 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('L', ModItems.LUNAR_HEROBRINE_GEM.get())
                 .define('S', Items.STICK)
                 .unlockedBy(getHasName(ModItems.LUNAR_HEROBRINE_GEM.get()), has(ModItems.LUNAR_HEROBRINE_GEM.get()))
+                .save(pRecipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.LUNAR_EDGE.get())
+                .pattern(" N ")
+                .pattern(" M ")
+                .pattern(" S ")
+                .define('N', ModItems.NOCTRIUMGEM.get())
+                .define('M', ModItems.MOONSTONE.get())
+                .define('S', Items.STICK)
+                .unlockedBy(getHasName(ModItems.MOONSTONE.get()), has(ModItems.MOONSTONE.get()))
                 .save(pRecipeOutput);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.NOCTRIUM_PICKAXE.get())
@@ -157,9 +176,39 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModItems.NOCTRIUMGEM.get()), has(ModItems.NOCTRIUMGEM.get()))
                 .save(pRecipeOutput);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.MOON_HELMET.get())
+                .pattern("MMM")
+                .pattern("M M")
+                .define('M', ModItems.MOONSTONE.get())
+                .unlockedBy(getHasName(ModItems.MOONSTONE.get()), has(ModItems.MOONSTONE.get()))
+                .save(pRecipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.MOON_CHESTPLATE.get())
+                .pattern("M M")
+                .pattern("MMM")
+                .pattern("MMM")
+                .define('M', ModItems.MOONSTONE.get())
+                .unlockedBy(getHasName(ModItems.MOONSTONE.get()), has(ModItems.MOONSTONE.get()))
+                .save(pRecipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.MOON_LEGGINGS.get())
+                .pattern("MMM")
+                .pattern("M M")
+                .pattern("M M")
+                .define('M', ModItems.MOONSTONE.get())
+                .unlockedBy(getHasName(ModItems.MOONSTONE.get()), has(ModItems.MOONSTONE.get()))
+                .save(pRecipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.MOON_BOOTS.get())
+                .pattern("M M")
+                .pattern("M M")
+                .define('M', ModItems.MOONSTONE.get())
+                .unlockedBy(getHasName(ModItems.MOONSTONE.get()), has(ModItems.MOONSTONE.get()))
+                .save(pRecipeOutput);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.NOCTRIUM_PLANKS.get())
-                .pattern("NN")
-                .pattern("NN")
+                .pattern(" N ")
+                .pattern("   ")
                 .define('N', ModBlocks.NOCTRIUM_LOG.get())
                 .unlockedBy(getHasName(ModBlocks.NOCTRIUM_LOG.get()), has(ModBlocks.NOCTRIUM_LOG.get()))
                 .save(pRecipeOutput);
@@ -249,10 +298,10 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModItems.NOCTRIUMGEM.get()), has(ModItems.NOCTRIUMGEM.get())).save(pRecipeOutput);
         wall(pRecipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.NOCTRIUM_WALL.get(), ModItems.NOCTRIUMGEM.get());
 
-        doorBuilder(ModBlocks.NOCTRIUM_DOOR.get(), Ingredient.of(ModItems.NOCTRIUMGEM.get())).group("noctrium")
-                .unlockedBy(getHasName(ModItems.NOCTRIUMGEM.get()), has(ModItems.NOCTRIUMGEM.get())).save(pRecipeOutput);
-        trapdoorBuilder(ModBlocks.NOCTRIUM_TRAPDOOR.get(), Ingredient.of(ModItems.NOCTRIUMGEM.get())).group("noctrium")
-                .unlockedBy(getHasName(ModItems.NOCTRIUMGEM.get()), has(ModItems.NOCTRIUMGEM.get())).save(pRecipeOutput);
+        doorBuilder(ModBlocks.NOCTRIUM_DOOR.get(), Ingredient.of(ModBlocks.NOCTRIUM_PLANKS.get())).group("noctrium")
+                .unlockedBy(getHasName(ModBlocks.NOCTRIUM_PLANKS.get()), has(ModBlocks.NOCTRIUM_PLANKS.get())).save(pRecipeOutput);
+        trapdoorBuilder(ModBlocks.NOCTRIUM_TRAPDOOR.get(), Ingredient.of(ModBlocks.NOCTRIUM_PLANKS.get())).group("noctrium")
+                .unlockedBy(getHasName(ModBlocks.NOCTRIUM_PLANKS.get()), has(ModBlocks.NOCTRIUM_PLANKS.get())).save(pRecipeOutput);
 
 
     }

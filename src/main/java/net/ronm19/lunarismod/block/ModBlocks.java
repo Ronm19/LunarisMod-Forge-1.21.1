@@ -3,6 +3,7 @@ package net.ronm19.lunarismod.block;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
@@ -133,6 +134,10 @@ public class ModBlocks {
                     return 30;
                 }
             });
+
+    public static boolean isTreeBlock(Block block) {
+        return block.defaultBlockState().is(BlockTags.LOGS) || block.defaultBlockState().is(BlockTags.LEAVES);
+    }
 
     public static final RegistryObject<Block> NOCTRIUM_SAPLING = registerBlock("noctrium_sapling",
             () -> new ModSapplingBlock(ModTreeGrowers.NOCTRIUM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING), ModBlocks.LUNAR_GRASS_BLOCK.get()));

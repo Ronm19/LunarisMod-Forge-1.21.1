@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "lunarismod:noctrium_gem"
+    },
+    "title": "Lunar Legacy",
+    "description": "Claim the mystical Lunar Edge from the fallen Sentinel.",
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {},
+  "requirements": [
+    [
+      "get_lunar_edge"
+    ]
+  ],
+  "rewards": {
+    "loot": [],
+    "experience": 4
+  }
+}

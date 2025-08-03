@@ -4,5 +4,11 @@
     "sounds": [
       "lunarismod:void_howler_howl"
     ]
+  },
+  "lunar_herobrine_boss_music": {
+    "subtitle": "sounds.lunarismod.lunar_herobrine_boss_music",
+    "sounds": [
+      "lunarismod:lunar_herobrine_boss_music"
+    ]
   }
 }
