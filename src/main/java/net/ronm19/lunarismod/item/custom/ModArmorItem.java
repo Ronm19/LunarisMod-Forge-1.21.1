@@ -2,8 +2,6 @@ package net.ronm19.lunarismod.item.custom;
 
 import com.google.common.collect.ImmutableMap;
 import net.ronm19.lunarismod.item.ModArmorMaterials;
-import net.ronm19.lunarismod.util.lighting.LightEmitter;
-import net.ronm19.lunarismod.util.lighting.LightLevel;
 import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -45,32 +43,13 @@ public class ModArmorItem extends ArmorItem {
                     .build();
 
 
-
-
-    public ModArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
+    public ModArmorItem( Holder<ArmorMaterial> material, Type type, Properties properties ) {
         super(material, type, properties);
     }
 
     @Override
-    public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
+    public void onInventoryTick( ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex ) {
         if (level.isClientSide) return;
-
-        boolean hasFullArmor = hasFullSuitOfArmorOn(player);
-        if (!hasFullArmor) {
-            LightEmitter.removeTrackedLight(player);
-            return;
-        }
-
-        evaluateArmorEffects(player);
-
-        boolean isNight = level.getDayTime() % 24000 >= 13000;
-        boolean isMoving = player.getDeltaMovement().lengthSqr() > 0.001;
-
-        if (isNight && isMoving) {
-            LightEmitter.updateLight(player, LightLevel.MEDIUM);
-        } else {
-            LightEmitter.removeTrackedLight(player);
-        }
     }
 
     private void evaluateArmorEffects(Player player) {
