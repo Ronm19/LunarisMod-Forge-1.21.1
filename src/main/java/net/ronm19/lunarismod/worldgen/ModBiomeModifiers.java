@@ -32,6 +32,7 @@ public class ModBiomeModifiers {
     public static final ResourceKey<BiomeModifier> SPAWN_LUNAR_ZOMBIE = registerKey("spawn_lunar_zombie");
     public static final ResourceKey<BiomeModifier> SPAWN_LUNAR_ZOMBIE_KING = registerKey("spawn_lunar_zombie_king");
     public static final ResourceKey<BiomeModifier> SPAWN_LUNAREON = registerKey("spawn_lunareon");
+    public static final ResourceKey<BiomeModifier> SPAWN_VOID_WARDEN = registerKey("spawn_void_warden");
 
     public static void bootstrap(BootstrapContext<BiomeModifier> context) {
         var placedFeature = context.lookup(Registries.PLACED_FEATURE);
@@ -71,6 +72,8 @@ public class ModBiomeModifiers {
         context.register(SPAWN_LUNAREON, new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
                 HolderSet.direct(biomes.getOrThrow(Biomes.FOREST), biomes.getOrThrow(Biomes.DARK_FOREST), biomes.getOrThrow(Biomes.BIRCH_FOREST), biomes.getOrThrow(Biomes.OLD_GROWTH_BIRCH_FOREST), biomes.getOrThrow(Biomes.OLD_GROWTH_PINE_TAIGA), biomes.getOrThrow(Biomes.TAIGA), biomes.getOrThrow(Biomes.SNOWY_TAIGA), biomes.getOrThrow(Biomes.WINDSWEPT_FOREST), biomes.getOrThrow(Biomes.GROVE), biomes.getOrThrow(Biomes.PLAINS), biomes.getOrThrow(ModBiomes.VIRECLAVE)),
                 List.of(new MobSpawnSettings.SpawnerData(ModEntities.LUNAREON.get(), 25, 5, 7))));
+        context.register(SPAWN_VOID_WARDEN, new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
+                HolderSet.direct(biomes.getOrThrow(ModBiomes.VIRECLAVE), biomes.getOrThrow(Biomes.DARK_FOREST), biomes.getOrThrow(Biomes.DEEP_DARK)), List.of(new MobSpawnSettings.SpawnerData(ModEntities.VOID_WARDEN.get(), 40, 3, 6))));
 
 
         //---------------------- End Entities ----------------- //

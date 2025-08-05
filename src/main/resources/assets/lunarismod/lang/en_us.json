@@ -17,9 +17,9 @@
   "item.lunarismod.noctrium_hoe": "Noctrium Hoe",
 
   "item.lunarismod.lunar_edge": "Lunar Edge",
-
   "item.lunarismod.noctrium_hammer": "Noctrium Hammer",
   "item.lunarismod.noctrium_tomahawk": "Noctrium Tomahawk",
+  "item.lunarismod.lunar_spear": "Lunar Spear",
 
   "item.lunarismod.noctrium_bone": "Noctrium Bone",
 
@@ -58,6 +58,13 @@
   "item.lunarismod.lunar_herobrine_spawn_egg": "Lunar Herobrine Spawn Egg",
   "item.lunarismod.lunar_zombie_king_spawn_egg": "Lunar Zombie King Spawn Egg",
   "item.lunarismod.lunareon_spawn_egg": "Lunareon Spawn Egg",
+  "item.lunarismod.lunar_knight_spawn_egg": "Lunar Knight Spawn Egg",
+  "item.lunarismod.void_warden_spawn_egg": "Void Warden Spawn Egg",
+
+
+  "sounds.lunarismod.voice.lunar_knight_summon": "The Lunar Knight calls upon the stars!",
+  "sounds.lunarismod.void_howler_howl": "The Void Howler unleashes a chilling cry!",
+  "sounds.lunarismod.lunar_herobrine_boss_music": "Herobrine’s power surges through the void!",
 
 
   "block.lunarismod.noctrium_block": "Noctrium Block",
@@ -112,7 +119,6 @@
   "entity.lunarismod.velomir": "Velomir",
   "entity.lunarismod.lunar_herobrine": "Lunar Herobrine",
   "entity.lunarismod.lunar_zombie_king": "Lunar Zombie King",
-
-  "key.category.lunarismod.lunaris": "Lunaris Mod Category",
-  "key.lunarismod.descend": "Descend"
+  "entity.lunarismod.lunar_knight": "Lunar Knight",
+  "entity.lunarismod.void_warden": "Void Warden"
 }

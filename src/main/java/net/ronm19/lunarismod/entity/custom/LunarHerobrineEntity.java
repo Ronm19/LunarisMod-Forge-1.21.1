@@ -33,7 +33,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.ronm19.lunarismod.entity.ModEntities;
-import net.ronm19.lunarismod.event.LunarEventManager;
 import net.ronm19.lunarismod.item.ModItems;
 import net.ronm19.lunarismod.sound.ModSounds;
 
@@ -46,21 +45,27 @@ public class LunarHerobrineEntity extends Monster {
             BossEvent.BossBarColor.PURPLE,
             BossEvent.BossBarOverlay.PROGRESS);
 
+
     private boolean phase2Started = false;
     private boolean phase3Started = false;
     private boolean musicStarted = false;
-    private int musicTimer = 0;
-    private final int MUSIC_DURATION = 1800;
 
     public final AnimationState idleAnimationState = new AnimationState();
+
     private int idleAnimationTimeout = 0;
     private int teleportCooldown = 0;
+    private int slamCooldown = 0;
+    private int fangsCooldown = 0;
+    private int meleeComboStep = 0;
+    private int meleeComboCooldown = 0;
+
     private int minionKills = 0;
 
-    public LunarHerobrineEntity( EntityType<? extends LunarHerobrineEntity> type, Level level ) {
+
+    public LunarHerobrineEntity(EntityType<? extends LunarHerobrineEntity> type, Level level) {
         super(type, level);
         this.setPersistenceRequired();
-        equipDefaultGear();
+        equipDefaultGear(); // Equip sword
     }
 
     @Override
@@ -70,9 +75,8 @@ public class LunarHerobrineEntity extends Monster {
         this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(5, new FloatGoal(this));
-
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
-        this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new HurtByTargetGoal(this).setAlertOthers(LunarKnightEntity.class));
     }
 
     @Override
@@ -81,229 +85,135 @@ public class LunarHerobrineEntity extends Monster {
         if (this.level().isClientSide) {
             updateAnimation();
         }
+        if (!level().isClientSide) {
+            bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
+            handleBossMusic(); // Fixed music
+            if (--teleportCooldown <= 0 && getTarget() != null) {
+                teleportBehindTarget();
+                teleportCooldown = 120;
+            }
+            handlePhases();
+            if (slamCooldown-- <= 0) performGroundSlamAOE();
+            if (fangsCooldown-- <= 0) summonEvokerFangs();
+            handleMeleeCombo();
+        }
     }
 
     private void updateAnimation() {
         if (idleAnimationTimeout <= 0) {
-            idleAnimationTimeout = 80;
+            idleAnimationTimeout = 40;
             idleAnimationState.start(this.tickCount);
         } else {
             idleAnimationTimeout--;
         }
     }
 
-    private int slamCooldown = 0;
-    private int fangsCooldown = 0;
-
-    @Override
-    public void aiStep() {
-        super.aiStep();
-        bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
-
-        if (!this.level().isClientSide) {
-            updateBossMusic();
-
-            // Teleportation logic
-            if (--teleportCooldown <= 0 && this.getTarget() != null) {
-                teleportBehindTarget();
-                teleportCooldown = 120;
-            }
-
-            // Phase Checks
-            double healthPercent = this.getHealth() / this.getMaxHealth();
-            if (healthPercent < 0.6 && healthPercent >= 0.2) applyPhase2Effects();
-            if (healthPercent < 0.2) applyPhase3Effects();
-
-            // Ground Slam Cooldown
-            if (slamCooldown > 0) slamCooldown--;
-            if (slamCooldown <= 0) {
-                performGroundSlamAOE();
-            }
-
-            // Fangs Cooldown
-            if (fangsCooldown > 0) fangsCooldown--;
-            if (fangsCooldown <= 0) {
-                summonEvokerFangs();
-            }
-
-            // Melee Combo - perform only if close
-            LivingEntity target = this.getTarget();
-            if (target != null) {
-                this.getNavigation().moveTo(target, 1.0);
-                if (this.distanceTo(target) < 3.5) {
-                    performMeleeCombo();
-                }
-            }
-        }
-    }
-
-
-    private int meleeComboStep = 0;
-    private int meleeComboCooldown = 0;
-
-    private void performMeleeCombo() {
-        if (meleeComboCooldown > 0) {
-            meleeComboCooldown--;
-            return;
-        }
-
-        LivingEntity target = this.getTarget();
-        if (target != null && this.distanceTo(target) < 3.5) {
-            this.swing(InteractionHand.MAIN_HAND);
-            this.doHurtTarget(target);
-            meleeComboStep++;
-            meleeComboCooldown = 10; // short delay between hits
-
-            if (meleeComboStep >= 3) {
-                meleeComboStep = 0; // reset combo after 3 hits
-                meleeComboCooldown = 20; // short pause before new combo
+    private void handleMeleeCombo() {
+        LivingEntity target = getTarget();
+        if (target != null && distanceTo(target) < 3.5) {
+            if (meleeComboCooldown-- <= 0) {
+                swing(InteractionHand.MAIN_HAND);
+                doHurtTarget(target);
+                meleeComboStep++;
+                meleeComboCooldown = meleeComboStep >= 3 ? 20 : 10;
+                if (meleeComboStep >= 3) meleeComboStep = 0;
             }
         } else {
-            meleeComboStep = 0; // reset combo if target out of range
+            meleeComboStep = 0;
         }
     }
 
-
-
-    private void performGroundSlamAOE() {
-        if (!(this.level() instanceof ServerLevel serverLevel)) return;
-
-        slamCooldown = 100; // Cooldown 5 seconds (100 ticks)
-
-        double radius = 4.0;
-        serverLevel.sendParticles(ParticleTypes.SMOKE, this.getX(), this.getY() + 0.1, this.getZ(),
-                4, radius / 2, 0.5, radius / 2, 0.03); // Reduced particles
-
-        List<LivingEntity> entities = this.level().getEntitiesOfClass(LivingEntity.class,
-                this.getBoundingBox().inflate(radius), e -> e != this && e.isAlive());
-
-        DamageSource source = createMobAttackDamageSource();
-        double healthPercent = this.getHealth() / this.getMaxHealth();
-        double knockbackStrength = (healthPercent > 0.6) ? 0.8 : (healthPercent > 0.2 ? 0.3 : 0.0);
-
-        for (LivingEntity entity : entities) {
-            entity.hurt(source, 8.0F);
-            if (knockbackStrength > 0) {
-                Vec3 dir = entity.position().subtract(this.position()).normalize();
-                entity.push(dir.x * knockbackStrength, 0.4, dir.z * knockbackStrength);
-            }
-        }
+    private void handlePhases() {
+        double hpPercent = getHealth() / getMaxHealth();
+        if (hpPercent < 0.6 && !phase2Started) activatePhase2();
+        if (hpPercent < 0.2 && !phase3Started) activatePhase3();
     }
 
-
-
-
-    private DamageSource createMobAttackDamageSource() {
-        return new DamageSource(
-                this.level().registryAccess()
-                        .registryOrThrow(Registries.DAMAGE_TYPE)
-                        .getHolderOrThrow(DamageTypes.MOB_ATTACK),
-                this
-        );
+    private void activatePhase2() {
+        summonLunarSentinels();
+        addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 600, 1));
+        level().playSound(null, blockPosition(), SoundEvents.EVOKER_CAST_SPELL, SoundSource.HOSTILE, 1F, 1F);
+        phase2Started = true;
     }
 
-    @Override
-    public boolean hurt(DamageSource source, float amount) {
-        float maxDamage = 8.0F;
-        float finalDamage = Math.min(amount, maxDamage);
-
-        Entity sourceEntity = source.getEntity();
-        if (sourceEntity instanceof Player sourcePlayer) {
-            if (sourcePlayer.isBlocking()) {
-                sourcePlayer.disableShield();
-                level().playSound(null, sourcePlayer.blockPosition(), SoundEvents.SHIELD_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
-            }
-        }
-
-        if (phase2Started && sourceEntity instanceof Player player) {
-            float reflected = finalDamage * 0.25F;
-            player.hurt(source, reflected);
-            player.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 60, 1));
-        }
-
-        return super.hurt(source, finalDamage);
+    private void activatePhase3() {
+        summonZombieKings();
+        addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 600, 4));
+        addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 600, 1));
+        level().playSound(null, blockPosition(), SoundEvents.WARDEN_ROAR, SoundSource.HOSTILE, 1.2F, 0.8F);
+        phase3Started = true;
     }
 
-    private void breakPlayerShield(Player player) {
-        if (player == null) return;
-
-        ItemStack offhand = player.getOffhandItem();
-        if (offhand.getItem() instanceof ShieldItem) {
-            player.getCooldowns().addCooldown(offhand.getItem(), 30);
-
-            level().playSound(null, player.blockPosition(), SoundEvents.SHIELD_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
-
-            if (this.level() instanceof ServerLevel serverLevel) {
-                serverLevel.sendParticles(ParticleTypes.CRIT, player.getX(), player.getY() + 1, player.getZ(),
-                        10, 0.3, 0.3, 0.3, 0.02);
-            }
-        }
-    }
-
-    private void updateBossMusic() {
-        musicTimer--;
+    private void handleBossMusic() {
         for (ServerPlayer player : bossEvent.getPlayers()) {
             double dist = this.distanceToSqr(player);
-            boolean inRange = dist <= 64 * 64;
-
-            if (inRange) {
-                stopAllMusic(player); // ensure background music is muted
+            if (dist <= 64 * 64) {
+                if (!musicStarted && ModSounds.LUNAR_HEROBRINE_BOSS_MUSIC.getHolder().isPresent()) {
+                    player.connection.send(new ClientboundSoundPacket(
+                            ModSounds.LUNAR_HEROBRINE_BOSS_MUSIC.getHolder().get(),
+                            SoundSource.RECORDS, player.getX(), player.getY(), player.getZ(), 1.0F, 1.0F, 0));
+                    musicStarted = true;
+                }
             } else {
-                stopAllMusic(player); // stops boss music
-                musicStarted = false; // allows it to restart if re-entering range
+                stopAllMusic(player);
+                musicStarted = false;
             }
         }
     }
 
-
-    private void applyPhase2Effects() {
-        if (!phase2Started) {
-            summonLunarSentinels();
-            this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 600, 1));
-            this.level().playSound(null, this.blockPosition(), SoundEvents.EVOKER_CAST_SPELL, SoundSource.HOSTILE, 1.0F, 1.0F);
-            phase2Started = true;
-        }
-
-        if (this.tickCount % 60 == 0) {
-            for (Player player : this.level().getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(10))) {
-                player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0));
-                player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1));
-            }
-        }
-
-        if (this.getHealth() < this.getMaxHealth() && this.tickCount % 100 == 0) {
-            this.heal(4.0F);
-            this.level().playSound(null, this.blockPosition(), SoundEvents.BEACON_AMBIENT, SoundSource.HOSTILE, 0.5F, 1.0F);
+    private void stopAllMusic(ServerPlayer player) {
+        if (player != null && player.connection != null) {
+            player.connection.send(new ClientboundStopSoundPacket(null, SoundSource.RECORDS));
         }
     }
 
-    private void applyPhase3Effects() {
-        if (!phase3Started) {
-            summonZombieKings();
-            this.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 600, 4));
-            this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 600, 1));
-            this.level().playSound(null, this.blockPosition(), SoundEvents.WARDEN_ROAR, SoundSource.HOSTILE, 1.2F, 0.8F);
-            phase3Started = true;
+    private void teleportBehindTarget() {
+        LivingEntity target = getTarget();
+        if (!(target instanceof Player player)) return;
+        Vec3 behind = player.position().subtract(player.getLookAngle().normalize().scale(4.0));
+        BlockPos pos = BlockPos.containing(behind);
+        if (isSafeTeleportPosition(pos)) {
+            level().playSound(null, blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.HOSTILE, 1.0F, 1.0F);
+            teleportTo(behind.x, behind.y, behind.z);
         }
+    }
+
+    private boolean isSafeTeleportPosition(BlockPos pos) {
+        return level().getBlockState(pos).isAir() && level().getBlockState(pos.above()).isAir();
+    }
+
+    private void performGroundSlamAOE() {
+        slamCooldown = 100;
+        if (!(level() instanceof ServerLevel serverLevel)) return;
+        serverLevel.sendParticles(ParticleTypes.SMOKE, getX(), getY(), getZ(), 4, 2.0, 0.5, 2.0, 0.03);
+        List<LivingEntity> entities = level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4), e -> e != this);
+        for (LivingEntity e : entities) {
+            e.hurt(createMobAttackDamageSource(), 8.0F);
+            e.push(e.getX() - getX(), 0.4, e.getZ() - getZ());
+        }
+    }
+
+    private void summonEvokerFangs() {
+        fangsCooldown = 200;
+        if (!(level() instanceof ServerLevel serverLevel)) return;
+        for (Player player : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(10))) {
+            EvokerFangs fangs = new EvokerFangs(level(), player.getX(), player.getY(), player.getZ(), 0.0F, 0, this);
+            level().addFreshEntity(fangs);
+            serverLevel.sendParticles(ParticleTypes.CRIT, player.getX(), player.getY() + 1, player.getZ(), 5, 0.2, 0.2, 0.2, 0.01);
+        }
+        level().playSound(null, blockPosition(), SoundEvents.EVOKER_CAST_SPELL, SoundSource.HOSTILE, 0.6F, 1.0F);
+    }
+
+    private DamageSource createMobAttackDamageSource() {
+        return new DamageSource(level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE)
+                .getHolderOrThrow(DamageTypes.MOB_ATTACK), this);
     }
 
     private void summonLunarSentinels() {
         for (int i = 0; i < 2; i++) {
-            LunarSentinelEntity sentinel = new LunarSentinelEntity(ModEntities.LUNARSENTINEL.get(), this.level());
-            sentinel.setPos(this.getX() + randomOffset(), this.getY(), this.getZ() + randomOffset());
-            sentinel.setPersistenceRequired();
-            sentinel.setCustomName(Component.literal("Herobrine's Sentinel"));
-            this.level().addFreshEntity(sentinel);
-        }
-    }
-
-    private void summonZombieKings() {
-        for (int i = 0; i < 2; i++) {
-            LunarZombieKingEntity king = new LunarZombieKingEntity(ModEntities.LUNAR_ZOMBIE_KING.get(), this.level());
-            king.setPos(this.getX() + randomOffset(), this.getY(), this.getZ() + randomOffset());
-            king.setPersistenceRequired();
-            king.setCustomName(Component.literal("Herobrine's Champion"));
-            this.level().addFreshEntity(king);
+            LunarSentinelEntity sentinel = new LunarSentinelEntity(ModEntities.LUNARSENTINEL.get(), level());
+            sentinel.setPos(getX() + randomOffset(), getY(), getZ() + randomOffset());
+            level().addFreshEntity(sentinel);
         }
     }
 
@@ -317,100 +227,17 @@ public class LunarHerobrineEntity extends Monster {
         }
     }
 
-    private void teleportBehindTarget() {
-        LivingEntity target = this.getTarget();
-        if (!(target instanceof Player player)) return;
 
-        Vec3 behind = player.position().subtract(player.getLookAngle().normalize().scale(4.0));
-        BlockPos pos = BlockPos.containing(behind);
-
-        if (isSafeTeleportPosition(pos)) {
-            playTeleportParticles();
-            this.teleportTo(behind.x, behind.y, behind.z);
-            level().playSound(null, this.blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.HOSTILE, 1.0F, 1.0F);
-        }
-    }
-
-    private boolean isSafeTeleportPosition(BlockPos pos) {
-        BlockState state = this.level().getBlockState(pos);
-        BlockState above = this.level().getBlockState(pos.above());
-        BlockState below = this.level().getBlockState(pos.below());
-        return state.isAir() && above.isAir() && below.canOcclude();
-    }
-
-    private void playTeleportParticles() {
-        if (this.level() instanceof ServerLevel serverLevel) {
-            serverLevel.sendParticles(ParticleTypes.PORTAL, this.getX(), this.getY(), this.getZ(),
-                    20, 0.5, 0.5, 0.5, 0.1);
+    private void summonZombieKings() {
+        for (int i = 0; i < 2; i++) {
+            LunarZombieKingEntity king = new LunarZombieKingEntity(ModEntities.LUNAR_ZOMBIE_KING.get(), level());
+            king.setPos(getX() + randomOffset(), getY(), getZ() + randomOffset());
+            level().addFreshEntity(king);
         }
     }
 
     private double randomOffset() {
-        return (this.random.nextDouble() * 6.0) - 3.0;
-    }
-
-    private void summonEvokerFangs() {
-        if (!(this.level() instanceof ServerLevel serverLevel)) return;
-
-        fangsCooldown = 200; // 10 sec cooldown
-
-        List<Player> players = this.level().getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(10));
-        int fangsSpawned = 0;
-
-        for (Player player : players) {
-            if (fangsSpawned >= 3) break; // Max 3 fangs per summon
-
-            double x = player.getX();
-            double y = player.getY();
-            double z = player.getZ();
-
-            EvokerFangs fangs = new EvokerFangs(this.level(), x, y, z, 0.0F, 0, this);
-            this.level().addFreshEntity(fangs);
-
-            serverLevel.sendParticles(ParticleTypes.CRIT, x, y + 0.5, z, 5, 0.2, 0.1, 0.2, 0.01);
-            fangsSpawned++;
-        }
-
-        this.level().playSound(null, this.blockPosition(), SoundEvents.EVOKER_CAST_SPELL, SoundSource.HOSTILE, 0.6F, 1.0F);
-    }
-
-
-
-    private void stopAllMusic(ServerPlayer player) {
-        if (player != null && player.connection != null) {
-            player.connection.send(new ClientboundStopSoundPacket(null, SoundSource.MUSIC));
-        }
-    }
-
-
-    @Override
-    public void startSeenByPlayer(ServerPlayer player) {
-        super.startSeenByPlayer(player);
-        bossEvent.addPlayer(player);
-        if (player != null && player.connection != null && ModSounds.LUNAR_HEROBRINE_BOSS_MUSIC.getHolder().isPresent()) {
-            player.connection.send(new ClientboundSoundPacket(
-                    ModSounds.LUNAR_HEROBRINE_BOSS_MUSIC.getHolder().get(),
-                    SoundSource.MUSIC, player.getX(), player.getY(), player.getZ(), 5.0F, 1.0F, 0));
-        }
-    }
-
-    @Override
-    public void stopSeenByPlayer(ServerPlayer player) {
-        super.stopSeenByPlayer(player);
-        bossEvent.removePlayer(player);
-        if (player != null && player.connection != null) {
-            player.connection.send(new ClientboundStopSoundPacket(null, SoundSource.MUSIC));
-        }
-    }
-
-    @Override
-    public void die(DamageSource cause) {
-        super.die(cause);
-        if (!this.level().isClientSide) {
-            for (ServerPlayer player : bossEvent.getPlayers()) {
-                stopAllMusic(player);
-            }
-        }
+        return (random.nextDouble() * 6.0) - 3.0;
     }
 
     private void equipDefaultGear() {
@@ -428,32 +255,29 @@ public class LunarHerobrineEntity extends Monster {
                 .add(Attributes.FOLLOW_RANGE, 50.0);
     }
 
+    @Override public boolean fireImmune() { return true; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WITHER_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(DamageSource source) { return SoundEvents.WITHER_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.WITHER_DEATH; }
+
     @Override
-    public boolean fireImmune() {
-        return true;
+    public void startSeenByPlayer(ServerPlayer player) {
+        super.startSeenByPlayer(player);
+        bossEvent.addPlayer(player);
     }
 
     @Override
-    protected SoundEvent getAmbientSound() {
-        return SoundEvents.WITHER_AMBIENT;
+    public void stopSeenByPlayer(ServerPlayer player) {
+        super.stopSeenByPlayer(player);
+        bossEvent.removePlayer(player);
+        stopAllMusic(player);
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.WITHER_HURT;
-    }
-
-    @Override
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.WITHER_DEATH;
-    }
-
-    public static void trySummonLunarHerobrine(Level level, BlockPos pos, Player player) {
-        if (LunarEventManager.isBloodMoon(level) && player.getMainHandItem().is(ModItems.SOUL_TOME.get())) {
-            LunarHerobrineEntity herobrine = new LunarHerobrineEntity(ModEntities.LUNAR_HEROBRINE.get(), level);
-            herobrine.setPos(pos.getX(), pos.getY() + 1, pos.getZ());
-            level.addFreshEntity(herobrine);
-            level.playSound(null, pos, SoundEvents.WITHER_SPAWN, SoundSource.HOSTILE, 1.5F, 0.5F);
+    public void die(DamageSource cause) {
+        super.die(cause);
+        for (ServerPlayer player : bossEvent.getPlayers()) {
+            stopAllMusic(player);
         }
     }
 }

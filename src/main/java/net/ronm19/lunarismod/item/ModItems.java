@@ -22,7 +22,7 @@ public class ModItems {
     public static final RegistryObject<Item> MOONSTONE = ITEMS.register("moonstone",
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> LUNAR_HEROBRINE_GEM = ITEMS.register("lunar_herobrine_gem",
-            () -> new Item(new Item.Properties().fireResistant().rarity(Rarity.EPIC)));
+            () -> new LunarHerobrineGemItem(new Item.Properties().fireResistant().rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> MOON_FRUIT_STEW = ITEMS.register("moon_fruit_stew",
             () -> new Item(new Item.Properties().food(ModFoodProperties.MOON_FRUIT_STEW)));
@@ -63,6 +63,12 @@ public class ModItems {
 
     public static final RegistryObject<Item> NOCTRIUM_TOMAHAWK = ITEMS.register("noctrium_tomahawk",
             () -> new NoctriumTomahawkItem(new Item.Properties().stacksTo(16)));
+
+
+
+    public static final RegistryObject<Item> LUNAR_SPEAR = ITEMS.register("lunar_spear",
+            () -> new LunarSpearItem(new Item.Properties().fireResistant().rarity(Rarity.COMMON)
+                    .attributes(LunarSpearItem.createAttributes())));
 
     public static final RegistryObject<Item> SOUL_TOME = ITEMS.register("soul_tome",
             () -> new SoulTomeItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
@@ -136,6 +142,12 @@ public class ModItems {
 
     public static final RegistryObject<Item> LUNAREON_SPAWN_EGG = ITEMS.register("lunareon_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.LUNAREON, 0x1B1E2A,  0x3D4D74, new Item.Properties()));
+
+    public static final RegistryObject<Item> LUNAR_KNIGHT_SPAWN_EGG = ITEMS.register("lunar_knight_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.LUNAR_KNIGHT, 0x1E1B2F,  0x7DF9FF, new Item.Properties()));
+
+    public static final RegistryObject<Item> VOID_WARDEN_SPAWN_EGG = ITEMS.register("void_warden_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.VOID_WARDEN, 0x1A1A1A,  0xB0F0D0, new Item.Properties()));
 
 
 

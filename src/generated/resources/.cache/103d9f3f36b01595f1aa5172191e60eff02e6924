@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-04T02:28:02.6567601	Registries
+// 1.21.1	2025-08-06T02:48:28.8769141	Registries
 12f206d0a2a091608c5b06057b6a56201d181fc6 data/lunarismod/enchantment/lunar_grace.json
 ffbe2b731ba885169bf01bbe80b4f6b02c0b8a4f data/lunarismod/forge/biome_modifier/add_noctrium_ore.json
 213b2e19b43ad1b61be3fdcff5152f0651660489 data/lunarismod/forge/biome_modifier/add_noctrium_tree.json
@@ -13,7 +13,8 @@ fd5aa2f9ca6cb510dfdd996ed98826884277375f data/lunarismod/forge/biome_modifier/sp
 f7f0a6cccefd07c0bb264f3a1ea95d8c31163914 data/lunarismod/forge/biome_modifier/spawn_voidhowler.json
 54afb960f308349b980f373d562b9b4f6ab1c83d data/lunarismod/forge/biome_modifier/spawn_void_eye.json
 4d3b62dba31d8457df15ea4330bbf1ba239ff3db data/lunarismod/forge/biome_modifier/spawn_void_phantom.json
-f16a5974497e0b76a605c224b1453b7a9e0f2bde data/lunarismod/worldgen/biome/vireclave.json
+8913bccd80615e355383240619dbde2f8076f929 data/lunarismod/forge/biome_modifier/spawn_void_warden.json
+cd8c87fc69dbca1073b76c61a019b739dd729727 data/lunarismod/worldgen/biome/vireclave.json
 d0964aa9f549a1b941d3196c94b1ed65a032e0f7 data/lunarismod/worldgen/biome/void_grove.json
 aca410cab5e25f91cde59b6ec2e7aaef23126c2a data/lunarismod/worldgen/configured_feature/husk_ore.json
 e06589b7ee084bf944817b296648f33df99e34e6 data/lunarismod/worldgen/configured_feature/noctrium.json

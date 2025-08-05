@@ -43,10 +43,12 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> LUNAR_GRASS_BLOCK = registerBlock("lunar_grass_block",
             () -> new GrassBlock(BlockBehaviour.Properties.of()
-                    .strength(3f).requiresCorrectToolForDrops().sound(SoundType.GRASS)));
+                    .strength(3f).sound(SoundType.GRASS)));
+
     public static final RegistryObject<Block> LUNAR_DIRT_BLOCK = registerBlock("lunar_dirt_block",
             () -> new Block(BlockBehaviour.Properties.of()
-                    .strength(3f).requiresCorrectToolForDrops().sound(SoundType.ROOTED_DIRT)));
+                    .strength(3f).sound(SoundType.ROOTED_DIRT)));
+
     public static final RegistryObject<Block> LUNAR_STONE_BLOCK = registerBlock("lunar_stone_block",
             () -> new Block(BlockBehaviour.Properties.of()
                     .strength(4f).requiresCorrectToolForDrops().sound(SoundType.STONE)));

@@ -143,6 +143,12 @@
         "maxCount": 3,
         "minCount": 1,
         "weight": 80
+      },
+      {
+        "type": "lunarismod:void_warden",
+        "maxCount": 6,
+        "minCount": 3,
+        "weight": 40
       }
     ],
     "underground_water_creature": [

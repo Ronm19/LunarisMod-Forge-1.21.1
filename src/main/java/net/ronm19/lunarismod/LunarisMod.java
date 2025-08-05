@@ -1,6 +1,7 @@
 package net.ronm19.lunarismod;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -93,6 +94,7 @@ public class LunarisMod {
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(ModEntities.LUNARWOLF.get(), LunarWolfRenderer::new);
             EntityRenderers.register(ModEntities.NOCTRIUM_TOMAHAWK.get(), NoctriumTomahawkProjectileRenderer::new);
+            EntityRenderers.register(ModEntities.LUNAR_SPEAR.get(), LunarSpearProjectileRenderer::new);
             EntityRenderers.register(ModEntities.VOIDHOWLER.get(), VoidHowlerRenderer::new);
             EntityRenderers.register(ModEntities.LUNARSENTINEL.get(), LunarSentinelRenderer::new);
             EntityRenderers.register(ModEntities.LUNAR_CREEPER.get(), LunarCreeperRenderer::new);
@@ -105,6 +107,8 @@ public class LunarisMod {
             EntityRenderers.register(ModEntities.LUNAR_HEROBRINE.get(), LunarHerobrineRenderer::new);
             EntityRenderers.register(ModEntities.LUNAR_ZOMBIE_KING.get(), LunarZombieKingRenderer::new);
             EntityRenderers.register(ModEntities.LUNAREON.get(), LunareonRenderer::new);
+            EntityRenderers.register(ModEntities.LUNAR_KNIGHT.get(), LunarKnightRenderer::new);
+            EntityRenderers.register(ModEntities.VOID_WARDEN.get(), VoidWardenRenderer::new);
 
         }
     }

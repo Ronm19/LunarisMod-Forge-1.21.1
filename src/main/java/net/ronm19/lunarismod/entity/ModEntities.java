@@ -1,8 +1,6 @@
 package net.ronm19.lunarismod.entity;
 
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -63,11 +61,23 @@ public class ModEntities {
             ENTITY_TYPES.register("lunareon", () -> EntityType.Builder.of(LunareonEntity::new, MobCategory.CREATURE)
                     .sized(0.8f, 1.5f).build("lunareon"));
 
+    public static final RegistryObject<EntityType<LunarKnightEntity>> LUNAR_KNIGHT =
+            ENTITY_TYPES.register("lunar_knight", () -> EntityType.Builder.of(LunarKnightEntity::new, MobCategory.CREATURE)
+                    .sized(0.6f, 2.5f).build("lunar_knight"));
+
+    public static final RegistryObject<EntityType<VoidWardenEntity>> VOID_WARDEN =
+            ENTITY_TYPES.register("void_warden", () -> EntityType.Builder.of(VoidWardenEntity::new, MobCategory.MONSTER)
+                    .sized(1.8f, 2.3f).build("void_warden"));
+
 
 
     public static final RegistryObject<EntityType<NoctriumTomahawkProjectileEntity>> NOCTRIUM_TOMAHAWK =
                 ENTITY_TYPES.register("noctrium_tomahawk", () -> EntityType.Builder.<NoctriumTomahawkProjectileEntity>of(NoctriumTomahawkProjectileEntity ::new, MobCategory.MISC)
                     .sized(0.5f, 1.15f).build("noctrium_tomahawk"));
+
+    public static final RegistryObject<EntityType<LunarSpearProjectileEntity>> LUNAR_SPEAR =
+            ENTITY_TYPES.register("lunar_spear", () -> EntityType.Builder.<LunarSpearProjectileEntity>of(LunarSpearProjectileEntity::new, MobCategory.MISC)
+                    .sized(0.5f, 1.15f).build("lunar_spear"));
 
     public static final RegistryObject<EntityType<VoidOrbEntity>> VOID_ORB =
             ENTITY_TYPES.register("void_orb", () -> EntityType.Builder.<VoidOrbEntity>of(VoidOrbEntity::new, MobCategory.MISC)

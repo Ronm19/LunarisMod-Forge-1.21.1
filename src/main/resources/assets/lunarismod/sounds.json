@@ -10,5 +10,11 @@
     "sounds": [
       "lunarismod:lunar_herobrine_boss_music"
     ]
+  },
+  "voice.lunar_knight_summon": {
+    "subtitle": "sounds.lunarismod.voice.lunar_knight_summon",
+    "sounds": [
+      "lunarismod:voice/lunar_knight_summon"
+    ]
   }
 }

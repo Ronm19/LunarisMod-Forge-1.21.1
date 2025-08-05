@@ -11,12 +11,14 @@ public class ModSurfaceRules {
     private static final SurfaceRules.RuleSource LUNAR_GRASS_BLOCK = makeStateRule(ModBlocks.LUNAR_GRASS_BLOCK.get());
 
     private static final SurfaceRules.RuleSource HUSK_STONE_BLOCK = makeStateRule(ModBlocks.HUSK_STONE_BLOCK.get());
+    private static final SurfaceRules.RuleSource MOONSTONE_BLOCK = makeStateRule(ModBlocks.MOONSTONE_BLOCK.get());
 
     public static SurfaceRules.RuleSource makeVireClaveRules() {
         return SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.VIRECLAVE),
                 SurfaceRules.sequence(
                         SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, LUNAR_GRASS_BLOCK),
-                        SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR, HUSK_STONE_BLOCK)
+                        SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR, HUSK_STONE_BLOCK),
+                        SurfaceRules.ifTrue(SurfaceRules.DEEP_UNDER_FLOOR, MOONSTONE_BLOCK)
                 )
         );
     }

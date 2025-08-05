@@ -1,0 +1,27 @@
+{
+  "criteria": {
+    "summon_trigger": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "minecraft:zombie"
+        }
+      }
+    }
+  },
+  "rewards": {
+    "function": "lunarismod:advancement/summon_knight"
+  },
+  "display": {
+    "title": "Summon the Lunar Knight",
+    "description": "You have awakened the ancient guardian.",
+    "icon": {
+      "item": "minecraft:nether_star"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/end.png"
+  },
+  "sound": "lunarismod:voice/lunar_knight_summon"
+}

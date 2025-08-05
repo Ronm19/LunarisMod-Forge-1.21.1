@@ -92,6 +92,15 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModItems.MOONSTONE.get()), has(ModItems.MOONSTONE.get()))
                 .save(pRecipeOutput);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.LUNAR_SPEAR.get())
+                .pattern(" M ")
+                .pattern(" M ")
+                .pattern(" S ")
+                .define('M', ModItems.MOONSTONE.get())
+                .define('S', Items.STICK)
+                .unlockedBy(getHasName(ModItems.NOCTRIUMGEM.get()), has(ModItems.NOCTRIUMGEM.get()))
+                .save(pRecipeOutput);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.NOCTRIUM_PICKAXE.get())
                 .pattern("NNN")
                 .pattern(" S ")

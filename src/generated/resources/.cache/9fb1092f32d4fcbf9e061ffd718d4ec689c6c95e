@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-03T23:33:18.799398	Recipes
+// 1.21.1	2025-08-06T02:23:10.5979071	Recipes
 c27cf3e44537e2b54238812d90d1dde5f78304ca data/lunarismod/advancement/recipes/building_blocks/moonstone_block_blasting.json
 f614db30f03ccf66a4942674e9a5bc901e8c08ff data/lunarismod/advancement/recipes/building_blocks/moonstone_block_smelting.json
 d2b2be7d568024cfc64e073b4a5e8f354a701e05 data/lunarismod/advancement/recipes/building_blocks/noctrium_planks.json
@@ -36,6 +36,7 @@ d596ea93dc1ad9d4d41913e0366fcd89ee7c23fd data/lunarismod/advancement/recipes/red
 b2d5e6f4a019ebecd4bd01432d4edbd11e822dff data/lunarismod/advancement/recipes/redstone/noctrium_trapdoor.json
 6ca55b140e55a9cf50a1761b546482f56426ea6a data/lunarismod/advancement/recipes/tools/lunar_edge.json
 9587e17090f5c0ec73e6997c2be89a0a0b417b61 data/lunarismod/advancement/recipes/tools/lunar_herobrine_sword.json
+ab4c9c023114278526b8768175b1ce69f2c379ab data/lunarismod/advancement/recipes/tools/lunar_spear.json
 3faec8b40f3c76c702e6f424aa5aaf18e574a9cb data/lunarismod/advancement/recipes/tools/noctrium_axe.json
 f9cfbadcc242790cfa24ee1c4d3b72328e7c0e04 data/lunarismod/advancement/recipes/tools/noctrium_hammer.json
 203b455aa8f0ac5ba6491ee13805f1c7f45dc0fc data/lunarismod/advancement/recipes/tools/noctrium_hoe.json
@@ -45,6 +46,7 @@ f8fd43112175fcb9266f4ed4a7055e36a1e92b2d data/lunarismod/advancement/recipes/too
 0149fdeead7bbb40bcbe4fc1b4466707b579fb40 data/lunarismod/advancement/recipes/tools/noctrium_tomahawk.json
 b36f79abaacb8f4492e502ae2f8521315d0f18ed data/lunarismod/recipe/lunar_edge.json
 081bf508d717d1659992991a49115381b909ba6e data/lunarismod/recipe/lunar_herobrine_sword.json
+e5c5945dc96453d43a462dbc105e9f69cef333ac data/lunarismod/recipe/lunar_spear.json
 af9fffebf55e1ab5f7ec37ee68a28ad569abe009 data/lunarismod/recipe/moonpple.json
 a1cf1d2c763855fa925b67030801eb3828d64bfb data/lunarismod/recipe/moonstone_block_blasting.json
 e9207e506800b230d060d98b57138d1c4f6ccdea data/lunarismod/recipe/moonstone_block_blasting_direct.json
