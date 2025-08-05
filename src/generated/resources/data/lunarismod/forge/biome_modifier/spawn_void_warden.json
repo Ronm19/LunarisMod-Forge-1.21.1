@@ -1,0 +1,14 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": [
+    "lunarismod:vireclave",
+    "minecraft:dark_forest",
+    "minecraft:deep_dark"
+  ],
+  "spawners": {
+    "type": "lunarismod:void_warden",
+    "maxCount": 6,
+    "minCount": 3,
+    "weight": 40
+  }
+}

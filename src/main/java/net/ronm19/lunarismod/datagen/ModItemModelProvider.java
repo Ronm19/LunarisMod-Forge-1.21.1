@@ -84,11 +84,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         trimmedArmorItem(ModItems.MOON_BOOTS);
 
 
-        trimmedArmorItem(ModItems.MOON_HELMET);
-        trimmedArmorItem(ModItems.MOON_CHESTPLATE);
-        trimmedArmorItem(ModItems.MOON_LEGGINGS);
-        trimmedArmorItem(ModItems.MOON_BOOTS);
-
         saplingItem(ModBlocks.NOCTRIUM_SAPLING);
 
         cubeBottomTopBlockItem(ModBlocks.LUNAR_GRASS_BLOCK);
@@ -105,6 +100,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         withExistingParent(ModItems.LUNAR_ZOMBIE_KING_SPAWN_EGG.getId().getPath(),mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.LUNAR_HEROBRINE_SPAWN_EGG.getId().getPath(),mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.LUNAREON_SPAWN_EGG.getId().getPath(),mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.LUNAR_KNIGHT_SPAWN_EGG.getId().getPath(),mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.VOID_WARDEN_SPAWN_EGG.getId().getPath(),mcLoc("item/template_spawn_egg"));
 
     }
 

@@ -42,6 +42,7 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.LUNAR_EDGE.get());
                         pOutput.accept(ModItems.NOCTRIUM_HAMMER.get());
                         pOutput.accept(ModItems.NOCTRIUM_TOMAHAWK.get());
+                        pOutput.accept(ModItems.LUNAR_SPEAR.get());
 
                         pOutput.accept(ModItems.NOCTRIUM_HELMET.get());
                         pOutput.accept(ModItems.NOCTRIUM_CHESTPLATE.get());
@@ -65,6 +66,8 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.LUNAR_ZOMBIE_KING_SPAWN_EGG.get());
                         pOutput.accept(ModItems.LUNAR_HEROBRINE_SPAWN_EGG.get());
                         pOutput.accept(ModItems.LUNAREON_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.LUNAR_KNIGHT_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.VOID_WARDEN_SPAWN_EGG.get());
 
 
                     }).build());

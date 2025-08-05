@@ -37,6 +37,9 @@ public class ModEventBusEvents {
         event.registerLayerDefinition(LunarHerobrineModel.LAYER_LOCATION, LunarHerobrineModel::createBodyLayer);
         event.registerLayerDefinition(LunarZombieKingModel.LAYER_LOCATION, LunarZombieKingModel::createBodyLayer);
         event.registerLayerDefinition(LunareonModel.LAYER_LOCATION, LunareonModel::createBodyLayer);
+        event.registerLayerDefinition(LunarKnightModel.LAYER_LOCATION, LunarKnightModel::createBodyLayer);
+        event.registerLayerDefinition(VoidWardenModel.LAYER_LOCATION, VoidWardenModel::createBodyLayer);
+        event.registerLayerDefinition(LunarSpearProjectileModel.LAYER_LOCATION, LunarSpearProjectileModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -53,6 +56,8 @@ public class ModEventBusEvents {
         event.put(LUNAR_HEROBRINE.get(), LunarHerobrineEntity.createAttributes().build());
         event.put(LUNAR_ZOMBIE_KING.get(), LunarZombieKingEntity.createAttributes().build());
         event.put(LUNAREON.get(), LunareonEntity.createAttributes().build());
+        event.put(LUNAR_KNIGHT.get(), LunarKnightEntity.createAttributes().build());
+        event.put(VOID_WARDEN.get(), VoidWardenEntity.createAttributes().build());
 
     }
 
@@ -229,6 +234,23 @@ public class ModEventBusEvents {
                 },
 
                 SpawnPlacementRegisterEvent.Operation.REPLACE          // ▶ replace default rule
+        );
+
+        event.register(
+                VOID_WARDEN.get(),                      // ▶ the entity
+                SpawnPlacementTypes.ON_GROUND,                       // ▶ spawn on ground
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,            // ▶ standard heightmap
+                ( entityType, level, spawnReason, pos, random ) -> {
+
+                    /* ---------- 2. Delegate to your custom animal rules ---------- */
+                    boolean beastRules = VoidWardenEntity.checkMobSpawnRules(
+                            (EntityType<? extends Monster>) entityType, level, spawnReason, pos, random);
+
+                    /* ---------- 3. Final verdict ---------- */
+                    return beastRules;
+                },
+
+                SpawnPlacementRegisterEvent.Operation.REPLACE      // ▶ replace default rule
         );
     }
 
